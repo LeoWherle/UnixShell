@@ -22,7 +22,7 @@ RESET		=	\033[0m
 
 NAME = 42sh
 
-SRC =
+SRC = src/main.c \
 
 TEST_CRIT	=	\
 
@@ -32,9 +32,9 @@ OBJ = 	$(SRC:.c=.o)
 
 MAKE  = make --no-print-directory
 
-LIBS = 
+LIBS = lib/clist
 LIBINC = $(addsuffix /include, $(addprefix -I, $(LIBS)))
-LIB_FLAGS =
+LIB_FLAGS = -Llib -lclist
 
 CFLAGS = -W -Wall -Wextra -Iinclude $(LIBINC)
 LDFLAGS = $(LIB_FLAGS)
@@ -42,7 +42,7 @@ CRITFLAGS = -lcriterion --coverage
 
 FILE_AMOUNT = $(shell echo $(SRC) | wc -w | sed -e 's/ //g')
 CURRENT_FILES = $(shell find src/ -type f -name "*.o" | wc -l | sed -e 's/ //g')
-CURRENT_FILE = $(CURRENT_FILES) - 1
+CURRENT_FILE = $(shell echo "$$(( $(CURRENT_FILES) + 1 ))")
 
 %.o: %.c
 	@$(CC) $(CFLAGS) $(LIB_FLAGS) $^ -c -o $@
