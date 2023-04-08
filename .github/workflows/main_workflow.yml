@@ -67,7 +67,6 @@ jobs:
       - name: Run tests and generate coverage reports
         run: |
             echo "## Unit Tests" >> $GITHUB_STEP_SUMMARY
-            make unit_tests
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
             make tests_run 2>> $GITHUB_STEP_SUMMARY
             echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
