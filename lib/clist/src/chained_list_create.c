@@ -16,7 +16,7 @@ static list_interface_t *init_interface(void)
     ASSERT_MALLOC(interface, NULL)
     interface->append = node_append;
     interface->insert = node_insert;
-    interface->popf = node_pop_first;
+    interface->popf = node_popf;
     interface->pop = node_pop;
     interface->append_list = list_append;
     interface->insert_list = list_insert;
