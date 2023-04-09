@@ -56,7 +56,7 @@ PERCENT_LEFT = $(shell echo "$$(( 10 - $(PERCENT) ))")
 		echo -n " "; \
 	done
 	@echo -en  "$(RESET)] ($(CURRENT_FILE)/$(FILE_AMOUNT))"
-	@echo -e " [$(CYAN)$(notdir $^)$(RESET)]$(BEGINL)"	
+	@echo -e " [$(CYAN)$(notdir $^)$(RESET)]$(BEGINL)"
 
 $(NAME): lib_build	$(OBJ)
 	@gcc -o $(NAME) $(OBJ) $(LDFLAGS)
