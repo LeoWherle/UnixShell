@@ -56,12 +56,20 @@ CRITFLAGS = -lcriterion --coverage
 FILE_AMOUNT = $(shell echo $(SRC) | wc -w | sed -e 's/ //g')
 CURRENT_FILES = $(shell find . -type f -name "*.o" | wc -l | sed -e 's/ //g')
 CURRENT_FILE = $(shell echo "$$(( $(CURRENT_FILES) + 1 ))")
+PERCENT = $(shell echo "$$(( $(CURRENT_FILE) * 10 / $(FILE_AMOUNT) ))")
+PERCENT_LEFT = $(shell echo "$$(( 10 - $(PERCENT) ))")
 
 %.o: %.c
 	@$(CC) $(CFLAGS) $^ -c -o $@
-	@echo -en "$(CLEARL)$(BLUE)building$(RESET): "
-	@echo -en "[$(CYAN)$(notdir $^)$(RESET)]"
-	@echo -e  "($(CURRENT_FILE)/$(FILE_AMOUNT))$(BEGINL)"
+	@echo -en "$(CLEARL)$(BLUE)building$(RESET): [$(GREEN)"
+	@for i in `seq 1 $(PERCENT)`; do \
+		echo -n "█"; \
+	done
+	@for i in `seq 1 $(PERCENT_LEFT)`; do \
+		echo -n " "; \
+	done
+	@echo -en  "$(RESET)] ($(CURRENT_FILE)/$(FILE_AMOUNT))"
+	@echo -e " [$(CYAN)$(notdir $^)$(RESET)]$(BEGINL)"	
 
 $(NAME): $(OBJ)
 	@ar rc $(NAME) $(OBJ)
