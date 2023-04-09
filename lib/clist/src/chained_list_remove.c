@@ -15,7 +15,7 @@
  * @param list the list to remove from
  * @return void* the data from the node
  */
-void *node_pop_first(list_t *list)
+void *node_popf(list_t *list)
 {
     node_t *node = NULL;
 
@@ -44,7 +44,7 @@ static void *pop_node_data(list_t *list, any_t data)
     node = node_find(list, data);
     ASSERT_MALLOC(node, NULL)
     if (node == list->head) {
-        data = node_pop_first(list);
+        data = node_popf(list);
     } else {
         node->prev->next = node->next;
         if (node->next != NULL)
@@ -92,7 +92,7 @@ void *node_pop(list_t *list, any_t data)
     ASSERT_MALLOC(list->head, NULL)
     if (data == NULL) {
         if (list->size == 1)
-            data = node_pop_first(list);
+            data = node_popf(list);
         else
             data = pop_last_node(list);
     } else {

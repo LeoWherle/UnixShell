@@ -11,12 +11,12 @@
 #include <unistd.h>
 #include "clist.h"
 
-void print_string(any_t data, void *arg, void *arg2)
+void print_string(any_t data)
 {
     write(1, data, strlen(data));
 }
 
-void destroy_stack(any_t data)
+void destroy_stack(UNUSED any_t data)
 {
     return;
 }

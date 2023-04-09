@@ -73,7 +73,7 @@
     int node_append(list_t *list, any_t data);
     int node_insert(list_t *list, any_t data);
 
-    any_t node_pop_first(list_t *list);
+    any_t node_popf(list_t *list);
     any_t node_pop(list_t *list, any_t data);
 
     void list_append(list_t *list_dest, list_t *list_src);

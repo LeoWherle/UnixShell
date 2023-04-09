@@ -4,6 +4,18 @@
 # Coding style
 *.log
 
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+
+# coverage
+coverage.info
+coverage.xml
+coverage/
+unit-tests
+
 # gprof
 gmon.out
 gprof.txt

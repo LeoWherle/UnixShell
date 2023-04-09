@@ -1,0 +1,81 @@
+
+name: Main_Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  EXECUTABLES: "42sh"
+
+jobs:
+  check_coding_style:
+    runs-on: ubuntu-latest
+    container: ghcr.io/epitech/coding-style-checker:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run coding style checker
+        run: |
+          check.sh $(pwd) $(pwd)
+          while IFS= read -r line; do
+            file=$(echo "$line" | awk -F ':' '{print $1}')
+            line_number=$(echo "$line" | awk -F ':' '{print $2}')
+            severity=$(echo "$line" | awk -F ':' '{print $3}')
+            message=$(echo "$line" | awk -F ':' '{print $4}')
+            echo "::error file=$file,line=$line_number::$severity $message"
+          done < coding-style-reports.log
+          line_count=$(wc -l coding-style-reports.log | awk '{print $1}')
+          if [ "$line_count" -gt 6 ]; then
+            echo "::error::Too many style errors"
+            exit 1
+          fi
+
+  compile_and_run_tests:
+    needs: check_coding_style
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Compile program
+        run: make
+
+      - name: Check executables
+        run: |
+          IFS=',' read -ra exec_paths <<< "${EXECUTABLES}"
+          for exec_path in "${exec_paths[@]}"; do
+            [ -x "$exec_path" ] || exit 1
+          done
+
+      - name: Run program_tester
+        run: |
+            echo "## Binary Testing" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            make binary_tests_run >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Clean
+        run: make fclean
+
+      - name: Run tests and generate coverage reports
+        run: |
+            echo "## Unit Tests" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            make tests_run 2>> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "## Coverage" >> $GITHUB_STEP_SUMMARY
+            echo "### Lines" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            gcovr --txt --exclude tests/ --exclude src/main.c >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            echo "### Branches" >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            gcovr --txt --exclude tests/ --exclude src/main.c --branches >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY

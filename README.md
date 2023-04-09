@@ -20,5 +20,7 @@
 ## How to use:
 
 ```
-  $ ./lem_in
+  $ ./42sh
 ```
+
+## Features:
