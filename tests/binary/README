@@ -5,7 +5,7 @@
 The directory must contain:
   tests 	=> the file that describes all the tests to be executed
   tester.sh	=> the test-executing script
-  mysh		=> your binary
+  42sh		=> your binary
 
 'tests' file contains a series of numbered tests.
 Each test is placed between markers. For instance:

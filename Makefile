@@ -132,7 +132,7 @@ tests_run:
 #	@./unit-tests
 
 binary_tests_run: $(NAME)
-	@cp $(NAME) tests/binary/mysh
+	@cp $(NAME) tests/binary/
 	@cd tests/binary && ./tester.sh
 
 .PHONY: all clean fclean re
