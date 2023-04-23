@@ -22,7 +22,27 @@ RESET		=	\033[0m
 
 NAME = 42sh
 
-SRC = src/main.c \
+SRC = 	src/minishell.c	\
+		src/minishell2.c	\
+		src/env.c	\
+		src/command_gestion.c	\
+		src/builtin/my_cd1.c	\
+		src/builtin/my_cd2.c	\
+		src/builtin/special_command.c	\
+		src/builtin/special_command2.c	\
+		src/ast/ast.c	\
+		src/ast/redir.c	\
+		src/ast/sep.c	\
+		src/lib/matrix_len.c	\
+		src/lib/my_getnbr.c	\
+		src/lib/my_str_copy_cat.c	\
+		src/lib/my_str_isnum.c	\
+		src/lib/my_str_isalphanum.c	\
+		src/lib/my_str_to_word_array.c	\
+		src/lib/my_strcat.c	\
+		src/lib/my_strcmp.c	\
+		src/lib/my_strcpy.c	\
+		src/lib/my_strncmp.c	\
 
 TEST_CRIT	=	\
 
@@ -56,7 +76,7 @@ PERCENT_LEFT = $(shell echo "$$(( 10 - $(PERCENT) ))")
 		echo -n " "; \
 	done
 	@echo -en  "$(RESET)] ($(CURRENT_FILE)/$(FILE_AMOUNT))"
-	@echo -e " [$(CYAN)$(notdir $^)$(RESET)]$(BEGINL)"	
+	@echo -e " [$(CYAN)$(notdir $^)$(RESET)]$(BEGINL)"
 
 $(NAME): lib_build	$(OBJ)
 	@gcc -o $(NAME) $(OBJ) $(LDFLAGS)
