@@ -131,10 +131,8 @@ tests_run:
 #	@echo -e [$(GREEN)Launch $(NAME) tests$(RESET)]
 #	@./unit-tests
 
-tests/binary/binary_tests: $(NAME)
-	cp $(NAME) $@
-
-binary_tests_run: tests/binary/binary_tests
-	cd tests/binary && ./tester.sh
+binary_tests_run: $(NAME)
+	@cp $(NAME) tests/binary/mysh
+	@cd tests/binary && ./tester.sh
 
 .PHONY: all clean fclean re
