@@ -12,6 +12,7 @@
     #define MYSH_H
 
     #include "errorhandling.h"
+    #include "clist.h"
 
     #define OPEN_E O_CREAT | O_WRONLY | O_TRUNC
     #define OPEN_B O_CREAT | O_WRONLY | O_APPEND
@@ -28,6 +29,9 @@
         env_t *first;
         env_t *pwd;
         env_t *oldpwd;
+        list_t *alias;
+        list_t *history;
+        list_t *job_control;
         char *home;
         char *old;
         char **path;
