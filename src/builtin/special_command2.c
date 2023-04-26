@@ -36,7 +36,7 @@ static int solve_this_shit(char *shit, head_t *head, int *r)
     return 0;
 }
 
-void my_exit(char **command_line, head_t *head, int *r)
+int my_exit(char **command_line, head_t *head, int *r)
 {
     int len = 0;
 
@@ -52,9 +52,10 @@ void my_exit(char **command_line, head_t *head, int *r)
             write(2, "exit: Expression Syntax.\n", 25);
         *r = 1;
     }
+    return 1;
 }
 
-int my_env(char **command_line, head_t *head)
+int my_env(char **command_line, head_t *head, int *ret)
 {
     struct stat extract = {0};
     if (matrix_len(command_line) == 1) {
@@ -62,18 +63,18 @@ int my_env(char **command_line, head_t *head)
             write(1, env->line, my_strlen(env->line));
             write(1, "\n", 1);
         }
-        return 0;
+        return *ret = 0;
     } else {
         write(2, "env : '", 7);
         write(2, command_line[1], my_strlen(command_line[1]));
         if (lstat(command_line[1], &extract) == -1) {
             write(2, "': No such file or directory\n", 29);
-            return 127;
+            return *ret = 127;
         } if (S_ISREG(extract.st_mode)) {
             write(2, "': No such file or directory\n", 29);
-            return 127;
+            return *ret = 127;
         }
         write(2, "' Permission denied\n", 20);
-        return 126;
+        return *ret = 126;
     }
 }

@@ -50,30 +50,6 @@ static int execute_command(char *command, char **arg, head_t *head)
     return state;
 }
 
-static bool exec_special_case(char **command_line, head_t *head, int *r)
-{
-    if (my_strcmp(command_line[0], "cd") == 0) {
-        *r = change_dir(command_line, head);
-        return true;
-    }
-    if (my_strcmp(command_line[0], "exit") == 0) {
-        my_exit(command_line, head, r);
-        return true;
-    }
-    if (my_strcmp(command_line[0], "setenv") == 0) {
-        *r = my_setenv(command_line, head);
-        return true;
-    } else if (my_strcmp(command_line[0], "unsetenv") == 0) {
-        *r = my_unsetenv(command_line, head);
-        return true;
-    }
-    if (my_strcmp(command_line[0], "env") == 0) {
-        *r = my_env(command_line, head);
-        return true;
-    }
-    return false;
-}
-
 int path_command(char **c, head_t *head)
 {
     int r = 1;

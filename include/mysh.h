@@ -21,10 +21,19 @@
     #define N_COMMAND "Invalid null command.\n"
     #define NO_NAME "Missing name for redirect.\n"
 
+    typedef struct head head_t;
+    typedef struct env env_t;
+    typedef int pid_t;
+
     typedef struct env {
         char *line;
         struct env *next;
     } env_t;
+
+    typedef struct builtin_cmd {
+        char *name;
+        int (*func)(char **, head_t *, int *return_value);
+    } builtin_cmd_t;
 
     typedef struct head {
         env_t *first;
@@ -52,18 +61,19 @@
     char **restore_path(void);
     char **find_path(env_t *);
     env_t *find_env(env_t *, char *);
-    int my_env(char **, head_t *);
+    int my_env(char **, head_t *, int *);
 
     /*command_gestion*/
     int use_command(char **, head_t *);
     int path_command(char **, head_t *);
+    bool exec_special_case(char **, head_t *, int *);
 
     /*special_command*/
-    int change_dir(char **, head_t *);
+    int change_dir(char **, head_t *, int *ret);
     int find_cd_type(char **, head_t *, int);
-    int my_setenv(char **, head_t *);
-    int my_unsetenv(char **, head_t *);
-    void my_exit(char **, head_t *, int *);
+    int my_setenv(char **, head_t *, int *ret);
+    int my_unsetenv(char **, head_t *, int *ret);
+    int my_exit(char **, head_t *, int *ret);
     int new_pwd(env_t *, head_t *);
 
     int separator_handler(char *command_line, head_t *head);
