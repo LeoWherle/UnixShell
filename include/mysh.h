@@ -13,6 +13,7 @@
 
     #include "errorhandling.h"
     #include "clist.h"
+    #include "mystr.h"
 
     #define OPEN_E O_CREAT | O_WRONLY | O_TRUNC
     #define OPEN_B O_CREAT | O_WRONLY | O_APPEND
@@ -20,10 +21,23 @@
     #define N_COMMAND "Invalid null command.\n"
     #define NO_NAME "Missing name for redirect.\n"
 
+    #define MAX_BUFFER_SIZE 1024
+    /*usefull for the prompt to get the current branch*/
+    #define BRANCH_COMMAND "git rev-parse --abbrev-ref HEAD 2> /dev/null"
+
+    typedef struct head head_t;
+    typedef struct env env_t;
+    typedef int pid_t;
+
     typedef struct env {
         char *line;
         struct env *next;
     } env_t;
+
+    typedef struct builtin_cmd {
+        char *name;
+        int (*func)(char **, head_t *, int *return_value);
+    } builtin_cmd_t;
 
     typedef struct head {
         env_t *first;
@@ -42,19 +56,6 @@
         int stdout_copy;
     } head_t;
 
-    /*lib*/
-    char **my_str_to_word_array(char const *, char);
-    int my_strlen(char const *);
-    int my_strncmp(char const *, char const *, int);
-    char *my_strcpy(char *, char const *);
-    char *my_strcat(char *, const char *);
-    int my_strcmp(char const *, char const *);
-    int my_str_isnum(char const *);
-    void free_matrix(char **);
-    int my_getnbr(char const *);
-    char *my_str_copy_cat(char *, char *);
-    int matrix_len(char **);
-    int my_str_isalphanum(char const *);
 
     /*env*/
     env_t *add_env(char const *);
@@ -64,20 +65,23 @@
     char **restore_path(void);
     char **find_path(env_t *);
     env_t *find_env(env_t *, char *);
-    int my_env(char **, head_t *);
+    int my_env(char **, head_t *, int *);
 
     /*command_gestion*/
     int use_command(char **, head_t *);
     int path_command(char **, head_t *);
+    bool exec_special_case(char **, head_t *, int *);
 
     /*special_command*/
-    int change_dir(char **, head_t *);
+    int change_dir(char **, head_t *, int *ret);
     int find_cd_type(char **, head_t *, int);
-    int my_setenv(char **, head_t *);
-    int my_unsetenv(char **, head_t *);
-    void my_exit(char **, head_t *, int *);
+    int my_setenv(char **, head_t *, int *ret);
+    int my_unsetenv(char **, head_t *, int *ret);
+    int my_exit(char **, head_t *, int *ret);
     int new_pwd(env_t *, head_t *);
 
     int separator_handler(char *command_line, head_t *head);
 
+    /*pretty print*/
+    void print_shell(void);
 #endif /*MYSH_H*/

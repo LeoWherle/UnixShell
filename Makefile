@@ -25,7 +25,9 @@ NAME = 42sh
 SRC = 	src/minishell.c	\
 		src/minishell2.c	\
 		src/env.c	\
+		src/prompt.c \
 		src/command_gestion.c	\
+		src/command_builtin.c	\
 		src/builtin/my_cd1.c	\
 		src/builtin/my_cd2.c	\
 		src/builtin/special_command.c	\
@@ -33,16 +35,7 @@ SRC = 	src/minishell.c	\
 		src/ast/ast.c	\
 		src/ast/redir.c	\
 		src/ast/sep.c	\
-		src/lib/matrix_len.c	\
-		src/lib/my_getnbr.c	\
-		src/lib/my_str_copy_cat.c	\
-		src/lib/my_str_isnum.c	\
-		src/lib/my_str_isalphanum.c	\
-		src/lib/my_str_to_word_array.c	\
-		src/lib/my_strcat.c	\
-		src/lib/my_strcmp.c	\
-		src/lib/my_strcpy.c	\
-		src/lib/my_strncmp.c	\
+
 
 TEST_CRIT	=	\
 
@@ -52,9 +45,9 @@ OBJ = 	$(SRC:.c=.o)
 
 MAKE  = make --no-print-directory
 
-LIBS = lib/clist
+LIBS = lib/clist lib/mystr
 LIBINC = $(addsuffix /include, $(addprefix -I, $(LIBS)))
-LIB_FLAGS = -Llib -lclist
+LIB_FLAGS = -Llib -lclist -lmystr
 
 CFLAGS = -W -Wall -Wextra -Iinclude $(LIBINC)
 LDFLAGS = $(LIB_FLAGS)

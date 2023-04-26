@@ -5,6 +5,8 @@
 ** transform a number that was in a tring into an int
 */
 
+#include "mystr.h"
+
 int my_getnbr(char const *str)
 {
     int nb = 0;
@@ -13,8 +15,8 @@ int my_getnbr(char const *str)
 
     for (o = o; str[o] == '-'; o++);
     for (o = o; str[o] != '\0'; o++) {
-        if (str[o] >= '0' && str[o] <= '9' && firste < 2)
-            nb = (nb * 10) + (str[o] - 48);
+        if (IS_NUM(str[o]) && firste < 2)
+            nb = (nb * 10) + (str[o] - '0');
         else
             break;
     }

@@ -7,10 +7,7 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
-
-void my_strcpy(char *, char *);
-void my_strcat(char *, char *);
-int my_strlen(char *);
+#include "mystr.h"
 
 char *my_str_copy_cat(char *copy, char *cat)
 {
