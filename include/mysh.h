@@ -22,6 +22,10 @@
     #define N_COMMAND "Invalid null command.\n"
     #define NO_NAME "Missing name for redirect.\n"
 
+    #define MAX_BUFFER_SIZE 1024
+    /*usefull for the prompt to get the current branch*/
+    #define BRANCH_COMMAND "git rev-parse --abbrev-ref HEAD 2> /dev/null"
+
     typedef struct head head_t;
     typedef struct env env_t;
     typedef int pid_t;
@@ -80,4 +84,6 @@
 
     int separator_handler(char *command_line, head_t *head);
 
+    /*pretty print*/
+    void print_shell(void);
 #endif /*MYSH_H*/

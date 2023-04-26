@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include "mysh.h"
 
+extern char **environ;
+
 char **find_path(env_t *env)
 {
     char **e_path = NULL;
@@ -52,14 +54,14 @@ static int loop(int state, head_t *head)
     int r = 0;
 
     if (state)
-        write(1, "$> ", 3);
+        print_shell();
     while (head->keep && getline(&read, &x, stdin) != EOF) {
         remove_line_break(read);
         read = change_command(read, head->alias);
         if (read[0] != '\0')
             r = separator_handler(read, head);
         if (state && head->keep)
-            write(1, "$> ", 3);
+            print_shell();
         read = NULL;
     }
     free(read);
