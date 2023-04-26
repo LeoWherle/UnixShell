@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -74,6 +75,7 @@ int main(int ac, char const**, char * const *e)
 
     if (ac != 1 || !e[0])
         return 84;
+    open(".42rc", O_CREAT, O_RDONLY , 0664);
     state = isatty(0);
     make_env(e, &head);
     if (!head.first)
