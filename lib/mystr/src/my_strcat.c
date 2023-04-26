@@ -4,7 +4,8 @@
 ** File description:
 ** concatenates two strings
 */
-int my_strlen(char *);
+
+#include "mystr.h"
 
 char *my_strcat(char *dest, const char *src)
 {
