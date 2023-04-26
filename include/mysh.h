@@ -13,6 +13,7 @@
 
     #include "errorhandling.h"
     #include "clist.h"
+    #include "rcfile.h"
     #include "mystr.h"
 
     #define OPEN_E O_CREAT | O_WRONLY | O_TRUNC
@@ -39,7 +40,7 @@
         env_t *first;
         env_t *pwd;
         env_t *oldpwd;
-        list_t *alias;
+        alias_t **alias;
         list_t *history;
         list_t *job_control;
         char *home;
@@ -64,6 +65,7 @@
     int my_env(char **, head_t *, int *);
 
     /*command_gestion*/
+    void create_rc_file(head_t *);
     int use_command(char **, head_t *);
     int path_command(char **, head_t *);
     bool exec_special_case(char **, head_t *, int *);
