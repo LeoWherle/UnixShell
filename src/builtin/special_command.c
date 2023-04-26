@@ -63,13 +63,13 @@ void replace_var(char *new, head_t *head)
     }
 }
 
-int my_setenv(char **c, head_t *head)
+int my_setenv(char **c, head_t *head, int *ret)
 {
     env_t *t = NULL;
     if (matrix_len(c) > 3 || matrix_len(c) == 1)
-        return env_error(matrix_len(c), head);
+        return *ret = env_error(matrix_len(c), head);
     if (conformity(c[1]))
-        return 1;
+        return *ret = 1;
     t = find_env(head->first, c[1]);
     if (t->line != NULL)
         free(t->line);
@@ -79,21 +79,21 @@ int my_setenv(char **c, head_t *head)
     }
     t->line = malloc((my_strlen(c[1]) + my_strlen(c[2]) + 4) * sizeof(char));
     if (!t->line || !t->next)
-        return -2;
+        return *ret = -2;
     my_strcpy(t->line, c[1]);
     my_strcat(t->line, "=");
     my_strcat(t->line, c[2]);
     replace_var(t->line, head);
-    return 0;
+    return *ret = 0;
 }
 
-int my_unsetenv(char **c, head_t *head)
+int my_unsetenv(char **c, head_t *head, int *ret)
 {
     env_t *t = NULL;
     env_t *p = NULL;
 
     if (matrix_len(c) == 1)
-        return write(2, "unsetenv: Too few arguments.\n", 29) / 29;
+        return *ret = write(2, "unsetenv: Too few arguments.\n", 29) / 29;
     for (int i = 1; c[i] != NULL; i++) {
         t = find_env(head->first, c[i]);
         if (t->line == NULL)

@@ -26,6 +26,7 @@ SRC = 	src/minishell.c	\
 		src/minishell2.c	\
 		src/env.c	\
 		src/command_gestion.c	\
+		src/command_builtin.c	\
 		src/builtin/my_cd1.c	\
 		src/builtin/my_cd2.c	\
 		src/builtin/special_command.c	\
