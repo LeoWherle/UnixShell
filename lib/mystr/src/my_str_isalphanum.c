@@ -5,14 +5,16 @@
 ** return 1 if the string only contain string
 */
 
+#include "mystr.h"
+
 int my_str_isalphanum(char const *str)
 {
     int i = 0;
 
     while (str[i] != '\0') {
-        if (str[i] < '0' || (str[i] > '9' && str[i] < 'A') ||
-            (str[i] > 'Z' && str[i] < 'a') || str[i] > 'z')
+        if (IS_NUM(str[i]) || IS_LOWER(str[i]) || IS_UPPER(str[i])) {
             return 0;
+        }
         i = i + 1;
     }
     return 1;

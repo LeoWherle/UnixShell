@@ -13,6 +13,7 @@
 
     #include "errorhandling.h"
     #include "clist.h"
+    #include "mystr.h"
 
     #define OPEN_E O_CREAT | O_WRONLY | O_TRUNC
     #define OPEN_B O_CREAT | O_WRONLY | O_APPEND
@@ -42,19 +43,6 @@
         int stdout_copy;
     } head_t;
 
-    /*lib*/
-    char **my_str_to_word_array(char const *, char);
-    int my_strlen(char const *);
-    int my_strncmp(char const *, char const *, int);
-    char *my_strcpy(char *, char const *);
-    char *my_strcat(char *, const char *);
-    int my_strcmp(char const *, char const *);
-    int my_str_isnum(char const *);
-    void free_matrix(char **);
-    int my_getnbr(char const *);
-    char *my_str_copy_cat(char *, char *);
-    int matrix_len(char **);
-    int my_str_isalphanum(char const *);
 
     /*env*/
     env_t *add_env(char const *);
