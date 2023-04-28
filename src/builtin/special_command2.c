@@ -78,3 +78,45 @@ int my_env(char **command_line, head_t *head, int *ret)
         return *ret = 126;
     }
 }
+
+static char *exec_special_echo(env_t *env, char *var_name, int ret)
+{
+    env_t *temp = env;
+
+    if (var_name[0] == '\0') {
+        printf("$");
+        return (NULL);
+    }
+    if (var_name[0] == '?') {
+        printf("%d", ret);
+        return (NULL);
+    }
+    while (temp->next != NULL) {
+        if (my_strncmp(temp->line, var_name, my_strlen(var_name) - 1) == 0)
+            return (temp->line + my_strlen(var_name) + 1);
+        temp = temp->next;
+    }
+    return (NULL);
+}
+
+int my_echo(char **command_line, head_t *head, int *ret)
+{
+    char *text = NULL;
+    int i = 1;
+
+    while (command_line[i] != NULL) {
+        if (command_line[i][0] != '-') {
+            text = command_line[i];
+            break;
+        }
+        i++;
+    }
+    if (text != NULL && text[0] == '$')
+        text = exec_special_echo(head->first, text + 1, *ret);
+    if (text == NULL) {
+        printf("\n");
+        return *ret = 0;
+    }
+    printf("%s\n", text);
+    return *ret = 0;
+}

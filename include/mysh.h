@@ -81,6 +81,7 @@
     int my_unsetenv(char **, head_t *, int *ret);
     int my_exit(char **, head_t *, int *ret);
     int new_pwd(env_t *, head_t *);
+    int my_echo(char **command_line, head_t *head, int *ret);
 
     int separator_handler(char *command_line, head_t *head);
 
