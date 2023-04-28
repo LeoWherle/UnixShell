@@ -57,7 +57,6 @@ static int loop(int state, head_t *head)
         print_shell();
     while (head->keep && getline(&read, &x, stdin) != EOF) {
         remove_line_break(read);
-        read = change_command(read, head->alias);
         if (read[0] != '\0')
             r = separator_handler(read, head);
         if (state && head->keep)
@@ -75,10 +74,11 @@ int main(int ac, char const**, char * const *e)
     head_t head = {0};
     int state = 0;
     int r = 0;
-
     if (ac != 1 || !e[0])
         return 84;
     create_rc_file(&head);
+    if (!head.alias)
+        return 84;
     state = isatty(0);
     make_env(e, &head);
     if (!head.first)

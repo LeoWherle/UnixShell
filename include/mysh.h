@@ -44,7 +44,7 @@
         env_t *first;
         env_t *pwd;
         env_t *oldpwd;
-        alias_t **alias;
+        list_t *alias;
         list_t *history;
         list_t *job_control;
         char *home;
@@ -81,6 +81,8 @@
     int my_unsetenv(char **, head_t *, int *ret);
     int my_exit(char **, head_t *, int *ret);
     int new_pwd(env_t *, head_t *);
+    int alias_builtin(char **, head_t *, int *ret);
+    int change_alias(char **command, head_t *head);
     int my_echo(char **command_line, head_t *head, int *ret);
 
     int separator_handler(char *command_line, head_t *head);

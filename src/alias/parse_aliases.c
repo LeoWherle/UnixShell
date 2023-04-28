@@ -9,58 +9,59 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fcntl.h"
-#include "rcfile.h"
+#include "errorh.h"
+#include "clist.h"
 #include "mysh.h"
 
-int get_nb_alias(void)
-{
-    FILE *fd = fopen(".42rc", "r");
-    char *line = NULL;
-    size_t size = 0;
-    int nb_alias = 0;
-
-    if (!fd)
-        return 0;
-    while (getline(&line, &size, fd) != -1) {
-        if (line[0] == 'a' && line[1] == 'l' && line[2] == 'i' &&
-            line[3] == 'a' && line[4] == 's')
-            nb_alias++;
-    }
-    return nb_alias;
-}
-
-void parse_alias(char *line, alias_t *alias)
+static int parse_alias(char *line, alias_t *alias)
 {
     char **alias_split = my_str_to_word_array(line, ':');
     int len = matrix_len(alias_split);
+    int command_len = 0;
 
     if (len != 3)
-        return;
+        return 0;
     alias->alias = strdup(alias_split[1]);
-    if (alias_split[2][strlen(alias_split[2]) - 1] == '\n')
-        alias_split[2][strlen(alias_split[2]) - 1] = '\0';
+    ASSERT_MALLOC(alias->alias, -1);
+    command_len = strlen(alias_split[2]);
+    if (alias_split[2][command_len - 1] == '\n')
+        alias_split[2][command_len - 1] = '\0';
     alias->command = strdup(alias_split[2]);
+    ASSERT_MALLOC(alias->command, -1);
+    return 1;
 }
 
-alias_t **get_alias_list(void)
+static list_t *create_alias_node(char *line, list_t *aliases)
 {
-    int nb_alias = get_nb_alias();
+    alias_t *alias = malloc(sizeof(alias_t));
+    int ret = 0;
+
+    ASSERT_MALLOC(alias, NULL);
+    ret = parse_alias(line, alias);
+    if (ret == -1)
+        return NULL;
+    if (ret == 0)
+        return aliases;
+    if (node_append(aliases, alias))
+        return NULL;
+    return aliases;
+}
+
+list_t *get_alias_list(void)
+{
     char *line = NULL;
     size_t size = 0;
-    int in = 0;
     FILE *fd = fopen(".42rc", "r");
-    alias_t **aliases = malloc(sizeof(alias_t *) * (nb_alias + 1));
+    list_t *aliases = list_init();
 
-    if (!fd)
+    if (!fd || !aliases)
         return NULL;
     while (getline(&line, &size, fd) != -1) {
-        if (line[0] == 'a' && line[1] == 'l' && line[2] == 'i' &&
-            line[3] == 'a' && line[4] == 's') {
-            aliases[in] = malloc(sizeof(alias_t));
-            parse_alias(line, aliases[in]);
-            in++;
+        if (IS_ALIAS(line)) {
+            aliases = create_alias_node(line, aliases);
+            ASSERT_PTR(aliases, NULL);
         }
     }
-    aliases[in] = NULL;
+    fclose(fd);
     return aliases;
 }
