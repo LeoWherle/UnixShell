@@ -11,7 +11,7 @@
 #ifndef MYSH_H
     #define MYSH_H
 
-    #include "errorhandling.h"
+    #include "errorh.h"
     #include "clist.h"
     #include "rcfile.h"
     #include "mystr.h"
