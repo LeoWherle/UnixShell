@@ -24,10 +24,10 @@
         #define REDDB "\033[1;31m"
         #define MGTDB "\033[1;35m"
         #define RST "\033[0m"
-        #define PRINTARGS(str) __FILE__, __LINE__, __func__, str
-        #define FMT MGTDB"Error: "RST"%s:%d: %s: assertion '%s' failed.\n"
-        #define DEBUG_PRINT(str) fprintf(stderr, FMT, PRINTARGS(str))
-        #define DEBUG_ERROR_CHECK(expr) if (!(expr)) { DEBUG_PRINT(#expr); }
+        #define PRINTARGS(str) (__FILE__, __LINE__, __func__, str)
+        #define FMT(l) MGTDB"Error: "RST"%s:%d: %s: assertion '%s' failed.\n"
+        #define DEBUG_PRINT(str) fprintf(2, FMT(str), PRINTARGS(str));
+        #define DEBUG_ERROR_CHECK(expr) if (!(expr)) DEBUG_PRINT(#expr)
     #else
         #define DEBUG_ERROR_CHECK(expr) do { } while (0)
         #define DEBUG_PRINT(str) do { } while (0)
