@@ -13,6 +13,17 @@
 #include "mysh.h"
 #include "ast.h"
 
+void create_rc_file(head_t *head)
+{
+    int fd = open(".42rc", O_CREAT | O_RDWR, 0664);
+
+    if (fd == -1)
+        return;
+    write(fd, "alias:ls:ls --color=auto\n", 25);
+    head->alias = get_alias_list();
+    close(fd);
+}
+
 int separator_handler(char *command_line, head_t *head)
 {
     ast_t *command_tree = NULL;

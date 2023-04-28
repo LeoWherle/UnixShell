@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -56,6 +57,7 @@ static int loop(int state, head_t *head)
         print_shell();
     while (head->keep && getline(&read, &x, stdin) != EOF) {
         remove_line_break(read);
+        read = change_command(read, head->alias);
         if (read[0] != '\0')
             r = separator_handler(read, head);
         if (state && head->keep)
@@ -76,6 +78,7 @@ int main(int ac, char const**, char * const *e)
 
     if (ac != 1 || !e[0])
         return 84;
+    create_rc_file(&head);
     state = isatty(0);
     make_env(e, &head);
     if (!head.first)
