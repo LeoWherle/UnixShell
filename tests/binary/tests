@@ -230,3 +230,20 @@ CLEAN=""
 TESTS=
   echo 'cat test_folder/*'
 [924-END]
+
+[925]
+NAME="echo with '$ PATH'"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $PATH'
+[925-END]
+
+[926]
+NAME="echo with '$ ?'"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls'
+  echo 'echo $?'
+[926-END]
