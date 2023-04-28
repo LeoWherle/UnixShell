@@ -19,7 +19,6 @@ void create_rc_file(head_t *head)
 
     if (fd == -1)
         return;
-    write(fd, "alias:ls:ls --color=auto\n", 25);
     head->alias = get_alias_list();
     close(fd);
 }
@@ -29,6 +28,9 @@ int separator_handler(char *command_line, head_t *head)
     ast_t *command_tree = NULL;
     int r = 0;
 
+    command_line = change_command(command_line, head->alias);
+    if (!command_line)
+        return 84;
     head->stdin_copy = dup(0);
     head->stdout_copy = dup(1);
     command_tree = build_ast(command_line, 0);
