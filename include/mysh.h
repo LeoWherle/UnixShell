@@ -11,7 +11,7 @@
 #ifndef MYSH_H
     #define MYSH_H
 
-    #include "errorhandling.h"
+    #include "errorh.h"
     #include "clist.h"
     #include "rcfile.h"
     #include "mystr.h"
@@ -83,6 +83,7 @@
     int new_pwd(env_t *, head_t *);
     int alias_builtin(char **, head_t *, int *ret);
     int change_alias(char **command, head_t *head);
+    int my_echo(char **command_line, head_t *head, int *ret);
 
     int separator_handler(char *command_line, head_t *head);
 

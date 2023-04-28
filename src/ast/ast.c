@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ast.h"
-#include "errorhandling.h"
+#include "errorh.h"
 #include "mysh.h"
 
 static const sep_t sep[8] = {

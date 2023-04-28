@@ -38,7 +38,7 @@ int separator_handler(char *command_line, head_t *head)
         head->keep = false;
         return 84;
     }
-    execute(command_tree, 0, 1, head);
+    r = execute(command_tree, 0, 1, head);
     free_ast(command_tree);
     dup2(head->stdin_copy, 0);
     dup2(head->stdout_copy, 1);

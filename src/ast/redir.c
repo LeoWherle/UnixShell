@@ -11,7 +11,7 @@
 #include <string.h>
 #include "ast.h"
 #include "mysh.h"
-#include "errorhandling.h"
+#include "errorh.h"
 
 int use_in(ast_t *node, UNUSED int to_read, int to_write, head_t *head)
 {

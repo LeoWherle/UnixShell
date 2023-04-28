@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fcntl.h"
-#include "errorhandling.h"
+#include "errorh.h"
 #include "clist.h"
 #include "mysh.h"
 
@@ -42,7 +42,8 @@ static list_t *create_alias_node(char *line, list_t *aliases)
         return NULL;
     if (ret == 0)
         return aliases;
-    node_append(aliases, alias);
+    if (node_append(aliases, alias))
+        return NULL;
     return aliases;
 }
 

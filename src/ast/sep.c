@@ -73,14 +73,17 @@ int use_pipe(ast_t *node, int to_read, int to_write, head_t *head)
 {
     int pfd[2] = {0};
     int pid = 0;
+    int r = 0;
 
     pipe(pfd);
     pid = fork();
     if (pid == 0) {
+        r = execute(node->left, to_read, pfd[1], head);
         close(pfd[0]);
-        exit(execute(node->left, to_read, pfd[1], head));
+        exit(r);
     } else {
         close(pfd[1]);
-        return execute(node->right, pfd[0], to_write, head);
+        r = execute(node->right, pfd[0], to_write, head);
+        return r;
     }
 }

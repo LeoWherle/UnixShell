@@ -43,7 +43,8 @@ static int create_alias(char **command, head_t *head)
     ASSERT_PTR(new->alias, 84);
     new->command = cat_command(command);
     ASSERT_PTR(new->command, 84);
-    node_append(head->alias, new);
+    if (node_append(head->alias, new))
+        return 84;
     return 0;
 }
 
