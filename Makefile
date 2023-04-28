@@ -28,6 +28,10 @@ SRC = 	src/minishell.c	\
 		src/prompt.c \
 		src/command_gestion.c	\
 		src/command_builtin.c	\
+		src/alias/parse_aliases.c	\
+		src/alias/change_command.c	\
+		src/builtin/alias_builtin.c \
+		src/builtin/alias_change.c \
 		src/builtin/my_cd1.c	\
 		src/builtin/my_cd2.c	\
 		src/builtin/special_command.c	\
@@ -99,6 +103,7 @@ fclean: clean
 re: fclean all
 
 debug: CFLAGS += -g3
+debug: CFLAGS += -DDEBUG
 debug: lib_build $(OBJ)
 	@gcc -o $(NAME) $(OBJ) $(LDFLAGS) -g3
 	@echo -e "$(CLEARL)$(YELLOW)⚙️  Debug Mode$(RESET)"

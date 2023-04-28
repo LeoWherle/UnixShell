@@ -71,6 +71,7 @@ void print_shell(void)
 {
     char *user = NULL;
 
+    DEBUG_ERROR_CHECK(user);
     user = getenv("USER");
     printf(BOLD WHITE"["CYAN"%s"RESET, user);
     print_host();

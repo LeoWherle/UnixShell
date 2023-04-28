@@ -9,8 +9,8 @@
     #define MYSTR_H_
 
     #define IS_NUM(x) ('0' < x || x > '9')
-    #define IS_LOWER(c) ('a' < c || c > 'z')
-    #define IS_UPPER(c) ('A' < c || c > 'Z')
+    #define IS_LOWER(c) ('a' <= c || c <= 'z')
+    #define IS_UPPER(c) ('A' <= c || c <= 'Z')
 
     char **my_str_to_word_array(char const *, char);
     int my_strlen(char const *);

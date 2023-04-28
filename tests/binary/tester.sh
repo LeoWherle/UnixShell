@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MYSHELL="$PWD/42sh"
+MYSHELL="$PWD/../../42sh"
 REFER="/bin/tcsh -f"
 TRAPSIG=0
 
@@ -92,7 +92,7 @@ load_test()
   then
     if [ $debug -ge 1 ]
     then
-      echo "Test $id ($NAME) : OK"
+      echo "$(tput setaf 3)Test $id $(tput sgr0)($NAME) :$(tput setaf 2) OK $(tput sgr0)"
       if [ $debug -eq 2 ]
       then
         echo "Output $MYSHELL :"
@@ -108,7 +108,7 @@ load_test()
   else
     if [ $debug -ge 1 ]
     then
-      echo "Test $id ($NAME) : KO - Check output in /tmp/test.$$/$id/" 
+      echo "$(tput setaf 3)Test $id $(tput sgr0)($NAME) :$(tput setaf 1) KO - Check output in /tmp/test.$$/$id/ $(tput sgr0)" 
       $MKDIR -p /tmp/test.$$/$id 2>/dev/null
       $CP /tmp/.shell.$$ /tmp/test.$$/$id/mysh.out
       $CP /tmp/.refer.$$ /tmp/test.$$/$id/tcsh.out

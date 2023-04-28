@@ -14,6 +14,8 @@ static const builtin_cmd_t builtin_commands[] = {
     {"setenv", &my_setenv},
     {"unsetenv", &my_unsetenv},
     {"env", &my_env},
+    {"alias", &alias_builtin},
+    {"echo", &my_echo},
 };
 
 bool exec_special_case(char **command_line, head_t *head, int *r)

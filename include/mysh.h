@@ -11,8 +11,9 @@
 #ifndef MYSH_H
     #define MYSH_H
 
-    #include "errorhandling.h"
+    #include "errorh.h"
     #include "clist.h"
+    #include "rcfile.h"
     #include "mystr.h"
 
     #define OPEN_E O_CREAT | O_WRONLY | O_TRUNC
@@ -68,6 +69,7 @@
     int my_env(char **, head_t *, int *);
 
     /*command_gestion*/
+    void create_rc_file(head_t *);
     int use_command(char **, head_t *);
     int path_command(char **, head_t *);
     bool exec_special_case(char **, head_t *, int *);
@@ -79,6 +81,9 @@
     int my_unsetenv(char **, head_t *, int *ret);
     int my_exit(char **, head_t *, int *ret);
     int new_pwd(env_t *, head_t *);
+    int alias_builtin(char **, head_t *, int *ret);
+    int change_alias(char **command, head_t *head);
+    int my_echo(char **command_line, head_t *head, int *ret);
 
     int separator_handler(char *command_line, head_t *head);
 

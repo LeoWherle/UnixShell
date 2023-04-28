@@ -9,13 +9,11 @@
 
 int my_str_isalphanum(char const *str)
 {
-    int i = 0;
-
-    while (str[i] != '\0') {
-        if (IS_NUM(str[i]) || IS_LOWER(str[i]) || IS_UPPER(str[i])) {
+    while (*str != '\0') {
+        if (!IS_NUM(*str) && !IS_LOWER(*str) && !IS_UPPER(*str)) {
             return 0;
         }
-        i = i + 1;
+        str++;
     }
     return 1;
 }
