@@ -21,7 +21,7 @@ int is_match(const char *pattern, const char *str)
         default: break;
     }
     if (*pattern == *str) {
-        return is_match(pattern + 1, str + 1);
+        return is_match(++pattern, ++str);
     }
     return 0;
 }
