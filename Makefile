@@ -41,9 +41,10 @@ SRC = 	src/minishell.c	\
 		src/ast/sep.c	\
 
 
-TEST_CRIT	=	\
+TEST_CRIT	=	tests/src/match_tests.c
 
-SRC_CRIT = $(SRC)
+SRC_CRIT =	src/globbings/glob_handlers.c	\
+			src/globbings/match.c
 
 OBJ = 	$(SRC:.c=.o)
 
@@ -125,9 +126,9 @@ perf: lib_build $(OBJ)
 
 tests_run:
 	@for i in $(LIBS); do $(MAKE) -C $$i tests_run; done
-#	@gcc -o unit-tests $(SRC_CRIT) $(TEST_CRIT) $(CFLAGS) $(CRITFLAGS)
-#	@echo -e [$(GREEN)Launch $(NAME) tests$(RESET)]
-#	@./unit-tests
+	@gcc -o unit-tests $(SRC_CRIT) $(TEST_CRIT) $(CFLAGS) $(CRITFLAGS)
+	@echo -e "[$(GREEN)Launch $(NAME) tests$(RESET)]"
+	@./unit-tests -j1
 
 binary_tests_run: $(NAME)
 	@cp $(NAME) tests/binary/
