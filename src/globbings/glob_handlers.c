@@ -45,3 +45,11 @@ int handle_inhibitor(const char *pattern, const char *str)
     }
     return 0;
 }
+
+int handle_default(const char *pattern, const char *str)
+{
+    if (*pattern == *str) {
+        return is_match(++pattern, ++str);
+    }
+    return 0;
+}

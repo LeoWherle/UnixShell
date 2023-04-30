@@ -50,8 +50,9 @@ static int handle_sqbracket_internal(const char *pattern, const char *str)
 
 int handle_sqbracket_neg(const char *pattern, const char *str)
 {
-    int res = handle_sqbracket_internal(pattern, str);
+    int res = 0;
 
+    res = handle_sqbracket_internal(pattern, str);
     if (res == 1) {
         return 0;
     }
@@ -64,8 +65,9 @@ int handle_sqbracket_neg(const char *pattern, const char *str)
 
 int handle_sqbracket_pos(const char *pattern, const char *str)
 {
-    int res = handle_sqbracket_internal(pattern, str);
+    int res = 0;
 
+    res = handle_sqbracket_internal(pattern, str);
     if (res == 1) {
         for (; *pattern && *pattern != ']'; pattern++);
         return is_match(++pattern, ++str);
