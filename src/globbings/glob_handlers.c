@@ -28,18 +28,15 @@ int handle_qmark(const char *pattern, const char *str)
     return 0;
 }
 
-/*
 int handle_sqbracket(const char *pattern, const char *str)
 {
     switch (*pattern) {
         case '\0': return 0;
         case ']': return is_match(++pattern, ++str);
         case '^': return handle_sqbracket_neg(++pattern, str);
-        case '[': return 0; // TODO : Add nested sqbrackets
-        default : return handle_sqbracket_pos(pattern, str);
+        default: return handle_sqbracket_pos(pattern, str);
     }
 }
-*/
 
 int handle_inhibitor(const char *pattern, const char *str)
 {

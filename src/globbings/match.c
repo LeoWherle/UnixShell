@@ -16,7 +16,7 @@ int is_match(const char *pattern, const char *str)
         case '\0': return *str ? 0 : 1;
         case '*': return handle_asterisk(++pattern, str);
         case '?': return handle_qmark(++pattern, str);
-        //case '[': return handle_sqbracket(++pattern, str);
+        case '[': return handle_sqbracket(++pattern, str);
         case '\\': return handle_inhibitor(++pattern, str);
         default: break;
     }
