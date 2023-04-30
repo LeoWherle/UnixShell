@@ -43,7 +43,8 @@ SRC = 	src/minishell.c	\
 
 TEST_CRIT	=	tests/src/match_tests.c
 
-SRC_CRIT =	src/globbings/glob_handlers.c	\
+SRC_CRIT =	src/globbings/sqbracket_handlers.c	\
+			src/globbings/glob_handlers.c	\
 			src/globbings/match.c
 
 OBJ = 	$(SRC:.c=.o)

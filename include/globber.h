@@ -15,4 +15,7 @@
     int handle_sqbracket(const char *pattern, const char *str);
     int handle_inhibitor(const char *pattern, const char *str);
 
+    int handle_sqbracket_neg(const char *pattern, const char *str);
+    int handle_sqbracket_pos(const char *pattern, const char *str);
+
 #endif /* !GLOBBER_H */
