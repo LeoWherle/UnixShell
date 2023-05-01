@@ -52,7 +52,7 @@ int my_exit(char **command_line, head_t *head, int *r)
             write(2, "exit: Expression Syntax.\n", 25);
         *r = 1;
     }
-    return 1;
+    return *r;
 }
 
 int my_env(char **command_line, head_t *head, int *ret)
