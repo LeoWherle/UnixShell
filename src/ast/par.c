@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 #include "ast.h"
-#include "errorhandling.h"
+#include "errorh.h"
 #include "mysh.h"
 
 int par_open(ast_t *node, int to_read, int to_write, head_t *head)
