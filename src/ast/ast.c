@@ -7,14 +7,17 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "ast.h"
 #include "errorh.h"
 #include "mysh.h"
 
-static const sep_t sep[8] = {
+static const sep_t sep[NB_SEP] = {
+    {"(", par_open},
+    {")", par_close},
     {";", use_semi_colon},
-    {"&&", use_and},
     {"||", use_or},
+    {"&&", use_and},
     {"|", use_pipe},
     {"<<", use_din},
     {"<", use_in},
@@ -22,7 +25,7 @@ static const sep_t sep[8] = {
     {">", use_out},
 };
 
-ast_t *create_node(void *data, enum type type)
+static ast_t *create_node(void *data, enum type type)
 {
     ast_t *new = NULL;
 
@@ -54,19 +57,10 @@ void free_ast(ast_t *ast)
     free(ast);
 }
 
-ast_t *build_ast(char *text, int i)
+static ast_t *divide_text(char *text, int i, int size, int len)
 {
     ast_t *new = NULL;
-    size_t size = 0;
-    size_t len = 0;
 
-    if (!text) return NULL;
-    if (i == 8)
-        return create_node(text, COMMAND);
-    len = strlen(sep[i].sep);
-    while (text[size] != '\0' && strncmp(&text[size], sep[i].sep, len) != 0)
-        size++;
-    if (text[size] == '\0') return build_ast(text, i + 1);
     new = create_node(sep[i].ptr, SEP);
     ASSERT_MALLOC(new, NULL);
     new->left = build_ast(strndup(text, size), i);
@@ -75,4 +69,21 @@ ast_t *build_ast(char *text, int i)
     ASSERT_MALLOC(new->right, NULL);
     free(text);
     return new;
+}
+
+ast_t *build_ast(char *text, int i)
+{
+    size_t size = 0;
+    size_t len = 0;
+
+    if (!text)
+        return NULL;
+    if (i == NB_SEP)
+        return create_node(text, COMMAND);
+    len = strlen(sep[i].sep);
+    while (text[size] != '\0' && strncmp(&text[size], sep[i].sep, len) != 0)
+        size++;
+    if (text[size] == '\0')
+        return build_ast(text, i + 1);
+    return divide_text(text, i, size, len);
 }

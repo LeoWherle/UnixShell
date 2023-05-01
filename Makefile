@@ -39,6 +39,8 @@ SRC = 	src/minishell.c	\
 		src/ast/ast.c	\
 		src/ast/redir.c	\
 		src/ast/sep.c	\
+		src/ast/par.c	\
+		src/ast/check_tree.c	\
 
 
 TEST_CRIT	=	\

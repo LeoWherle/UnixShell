@@ -23,14 +23,25 @@ void create_rc_file(head_t *head)
     close(fd);
 }
 
+bool only_st(char *line)
+{
+    int i = 0;
+
+    while ((line[i] == ' ' || line[i] == '\t') && line[i] != '\0')
+        i++;
+    if (line[i] == '\0')
+        return true;
+    return false;
+}
+
 int separator_handler(char *command_line, head_t *head)
 {
     ast_t *command_tree = NULL;
     int r = 0;
 
+    if (only_st(command_line)) return 0;
+    if (!command_line) return 84;
     command_line = change_command(command_line, head->alias);
-    if (!command_line)
-        return 84;
     head->stdin_copy = dup(0);
     head->stdout_copy = dup(1);
     command_tree = build_ast(command_line, 0);
@@ -38,6 +49,7 @@ int separator_handler(char *command_line, head_t *head)
         head->keep = false;
         return 84;
     }
+    if (!check_tree(command_tree, 0)) return 1;
     r = execute(command_tree, 0, 1, head);
     free_ast(command_tree);
     dup2(head->stdin_copy, 0);

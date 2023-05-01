@@ -34,6 +34,8 @@ char **find_path(env_t *env)
 
 void free_matrix(char **matrix)
 {
+    if (!matrix)
+        return;
     for (int i = 0; matrix[i] != NULL; i++)
         free(matrix[i]);
     free(matrix);
