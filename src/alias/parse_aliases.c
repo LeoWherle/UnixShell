@@ -63,5 +63,6 @@ list_t *get_alias_list(void)
         }
     }
     fclose(fd);
+    free(line);
     return aliases;
 }
