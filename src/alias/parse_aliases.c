@@ -58,7 +58,7 @@ list_t *get_alias_list(void)
     if (!fd || !aliases)
         return NULL;
     while (getline(&line, &size, fd) != -1) {
-        if (IS_ALIAS(line)) {
+        if (strncmp(line, "alias", 5) == 0) {
             aliases = create_alias_node(line, aliases);
             ASSERT_PTR(aliases, NULL);
         }
