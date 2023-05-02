@@ -14,9 +14,8 @@
 #include "mysh.h"
 #include "errorh.h"
 
-void order_redir(ast_t *command, ast_t *redir)
+static void order_redir(ast_t *command, ast_t *redir)
 {
-    int command_len = 0;
     int redir_len = 0;
     int i = 0;
     int j = 1;
@@ -24,19 +23,19 @@ void order_redir(ast_t *command, ast_t *redir)
     char **r_text = redir->data;
     char **new_text = NULL;
 
-    command_len = matrix_len(c_text);
     redir_len = matrix_len(r_text);
-    if (redir_len == 1) return;
-    new_text = malloc((command_len + redir_len) * sizeof(char *));
-    for (; c_text && c_text[i]; i++)
-        new_text[i] = c_text[i];
-    for (; r_text[j]; j++) {
-        new_text[i + j - 1] = r_text[j];
-        r_text[j] = NULL;
+    if (redir_len > 1) {
+        new_text = malloc((matrix_len(c_text) + redir_len) * sizeof(char *));
+        for (; c_text && c_text[i]; i++)
+            new_text[i] = c_text[i];
+        for (; r_text[j]; j++) {
+            new_text[i + j - 1] = r_text[j];
+            r_text[j] = NULL;
+        }
+        new_text[i + j - 1] = NULL;
+        free(c_text);
+        command->data = new_text;
     }
-    new_text[i + j - 1] = NULL;
-    free(c_text);
-    command->data = new_text;
 }
 
 int use_in(ast_t *node, UNUSED int to_read, int to_write, head_t *head)
