@@ -25,4 +25,9 @@
     int matrix_len(char **);
     int my_str_isalphanum(char const *);
 
+    void my_fprintf(int fd, char const *format, ...);
+    void my_fputchar(int fd, char c);
+    void my_fputnbr(int fd, int nb);
+    void my_fputstr(int fd, char const *str);
+
 #endif /* !MYSTR_H_ */
