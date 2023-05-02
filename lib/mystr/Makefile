@@ -32,6 +32,11 @@ SRC 	=	src/matrix_len.c \
 			src/my_strcmp.c \
 			src/my_strcpy.c \
 			src/my_strncmp.c \
+			src/fprintf/my_fprintf.c \
+			src/fprintf/my_fputchar.c \
+			src/fprintf/my_fputstr.c \
+			src/fprintf/my_fputnbr.c \
+			src/fprintf/my_fputnbr.c \
 
 CRIT_LIST	=	\
 
