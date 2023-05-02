@@ -75,11 +75,11 @@ static int change_var(char *go_to, head_t *head, char misc)
     char *path = NULL;
 
     path = getcwd(path, 0);
-    if (head->old)
-        free(head->old);
     if (!go_to || chdir(go_to) == -1) {
         return error_cd(go_to, head, misc);
     }
+    if (head->old)
+        free(head->old);
     head->old = malloc((my_strlen(path) + 1) * sizeof(char));
     my_strcpy(head->old, path);
     free(path);
