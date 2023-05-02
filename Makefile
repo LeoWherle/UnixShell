@@ -110,6 +110,8 @@ debug: lib_build $(OBJ)
 	@gcc -o $(NAME) $(OBJ) $(LDFLAGS) -g3
 	@echo -e "$(CLEARL)$(YELLOW)⚙️  Debug Mode$(RESET)"
 
+cdebug: fclean debug
+
 gprof: CFLAGS += -pg
 gprof: lib_build $(OBJ)
 	@rm -f gmon.out gprof.txt
