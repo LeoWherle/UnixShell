@@ -89,4 +89,8 @@
 
     /*pretty print*/
     void print_shell(void);
+
+    bool create_head(head_t *head, char * const *e);
+    void free_head(head_t *head);
+
 #endif /*MYSH_H*/
