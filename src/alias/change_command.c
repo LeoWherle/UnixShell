@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fcntl.h"
-#include "rcfile.h"
 #include "mysh.h"
+#include "rcfile.h"
 
 static char *get_full_command(char **command)
 {
@@ -30,6 +30,7 @@ static char *get_full_command(char **command)
         my_strcat(full_command, " ");
     }
     full_command[len] = '\0';
+    free_matrix(command);
     return full_command;
 }
 
@@ -42,6 +43,7 @@ static char *get_alias(char *command_part, list_t *aliases)
     while (ali) {
         data = ali->data;
         if (strcmp(data->alias, command_part) == 0) {
+            free(command_part);
             command = strdup(data->command);
             ASSERT_MALLOC(command, NULL);
             return command;

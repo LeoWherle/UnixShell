@@ -89,4 +89,7 @@
 
     /*pretty print*/
     void print_shell(void);
+
+    /*free functions*/
+    void free_alias(void *);
 #endif /*MYSH_H*/

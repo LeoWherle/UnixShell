@@ -68,6 +68,7 @@ static int loop(int state, head_t *head)
     free(read);
     free_env(head->first);
     free(head->home);
+    list_destroy(head->alias, free_alias);
     return r;
 }
 
