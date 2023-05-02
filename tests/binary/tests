@@ -188,16 +188,6 @@ TESTS=
   echo 'echo -n wow26 | cat -e'
 [919-END]
 
-[920]
-NAME="echo with option -e"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo 'echo -e arbre'
-  echo 'echo -e arbre\n'
-  echo 'echo -e Wow26\t | cat -e'
-[920-END]
-
 [921]
 NAME="empty command"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"

@@ -65,6 +65,8 @@ char **my_str_to_word_array(char const *str, char sep)
     int index = 0;
 
     nb_word = find_nb_word(str, sep);
+    if (nb_word == 0)
+        return NULL;
     word_array = malloc((nb_word + 1) * sizeof(char *));
     for (int i = 0; i < nb_word; i++) {
         for (index = index; str[index] == sep || str[index] == '\t'; index++);

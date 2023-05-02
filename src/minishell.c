@@ -34,6 +34,8 @@ char **find_path(env_t *env)
 
 void free_matrix(char **matrix)
 {
+    if (!matrix)
+        return;
     for (int i = 0; matrix[i] != NULL; i++)
         free(matrix[i]);
     free(matrix);
@@ -66,6 +68,7 @@ static int loop(int state, head_t *head)
     free(read);
     free_env(head->first);
     free(head->home);
+    list_destroy(head->alias, free_alias);
     return r;
 }
 

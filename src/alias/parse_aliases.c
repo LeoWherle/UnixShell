@@ -28,6 +28,7 @@ static int parse_alias(char *line, alias_t *alias)
         alias_split[2][command_len - 1] = '\0';
     alias->command = strdup(alias_split[2]);
     ASSERT_MALLOC(alias->command, -1);
+    free_matrix(alias_split);
     return 1;
 }
 
@@ -57,11 +58,21 @@ list_t *get_alias_list(void)
     if (!fd || !aliases)
         return NULL;
     while (getline(&line, &size, fd) != -1) {
-        if (IS_ALIAS(line)) {
+        if (strncmp(line, "alias", 5) == 0) {
             aliases = create_alias_node(line, aliases);
             ASSERT_PTR(aliases, NULL);
         }
     }
     fclose(fd);
+    free(line);
     return aliases;
+}
+
+void free_alias(void *void_alias)
+{
+    alias_t *alias = void_alias;
+
+    free(alias->alias);
+    free(alias->command);
+    free(alias);
 }

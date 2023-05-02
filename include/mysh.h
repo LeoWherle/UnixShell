@@ -73,6 +73,7 @@
     int use_command(char **, head_t *);
     int path_command(char **, head_t *);
     bool exec_special_case(char **, head_t *, int *);
+    char *change_command(char *, head_t *);
 
     /*special_command*/
     int change_dir(char **, head_t *, int *ret);
@@ -89,4 +90,7 @@
 
     /*pretty print*/
     void print_shell(void);
+
+    /*free functions*/
+    void free_alias(void *);
 #endif /*MYSH_H*/

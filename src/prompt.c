@@ -29,6 +29,8 @@ static void print_dir(void)
 
     cwd = getcwd(cwd, 0);
     token = strtok(cwd, "/");
+    if (token == NULL)
+        dir = "/";
     while (token != NULL) {
         dir = token;
         token = strtok(NULL, "/");
@@ -71,8 +73,8 @@ void print_shell(void)
 {
     char *user = NULL;
 
-    DEBUG_ERROR_CHECK(user);
     user = getenv("USER");
+    DEBUG_ERROR_CHECK(user);
     printf(BOLD WHITE"["CYAN"%s"RESET, user);
     print_host();
     print_dir();

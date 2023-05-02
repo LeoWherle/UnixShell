@@ -50,7 +50,7 @@ list_t *list_build(char **array)
     list = list_init();
     ASSERT_MALLOC(list, NULL)
     while (array[i] != NULL) {
-        if(node_append(list, (void *)array[i])) {
+        if (node_append(list, (void *)array[i])) {
             return NULL;
         }
         i++;

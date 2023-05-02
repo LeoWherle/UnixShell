@@ -39,6 +39,8 @@ SRC = 	src/minishell.c	\
 		src/ast/ast.c	\
 		src/ast/redir.c	\
 		src/ast/sep.c	\
+		src/ast/par.c	\
+		src/ast/check_tree.c	\
 
 
 TEST_CRIT	=	tests/src/match_tests.c
@@ -109,6 +111,8 @@ debug: CFLAGS += -DDEBUG
 debug: lib_build $(OBJ)
 	@gcc -o $(NAME) $(OBJ) $(LDFLAGS) -g3
 	@echo -e "$(CLEARL)$(YELLOW)⚙️  Debug Mode$(RESET)"
+
+cdebug: fclean debug
 
 gprof: CFLAGS += -pg
 gprof: lib_build $(OBJ)
