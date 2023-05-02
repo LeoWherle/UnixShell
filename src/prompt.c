@@ -29,6 +29,8 @@ static void print_dir(void)
 
     cwd = getcwd(cwd, 0);
     token = strtok(cwd, "/");
+    if (token == NULL)
+        dir = "/";
     while (token != NULL) {
         dir = token;
         token = strtok(NULL, "/");
