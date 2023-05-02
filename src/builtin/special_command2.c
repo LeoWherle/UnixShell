@@ -88,7 +88,8 @@ static int print_echo(char *text, char **command_line, int i)
         return 0;
     }
     for (index = 0; text[index] != '\0'; index++) {
-        if (text[index] != '"' && text[index] != '\'')
+        if ((text[index] != '"' && text[index] != '\'' && text[index] != '\\')
+        || text[index - 1] == '\\')
             write(1, &text[index], 1);
     }
     if (command_line[i + 1] != NULL && command_line[i + 1][0] != '-')
