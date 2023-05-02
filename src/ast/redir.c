@@ -14,7 +14,7 @@
 #include "mysh.h"
 #include "errorh.h"
 
-static void order_redir(ast_t *command, ast_t *redir)
+static bool order_redir(ast_t *command, ast_t *redir)
 {
     int redir_len = 0;
     int i = 0;
@@ -24,18 +24,18 @@ static void order_redir(ast_t *command, ast_t *redir)
     char **new_text = NULL;
 
     redir_len = matrix_len(r_text);
-    if (redir_len > 1) {
-        new_text = malloc((matrix_len(c_text) + redir_len) * sizeof(char *));
-        for (; c_text && c_text[i]; i++)
-            new_text[i] = c_text[i];
-        for (; r_text[j]; j++) {
-            new_text[i + j - 1] = r_text[j];
-            r_text[j] = NULL;
-        }
-        new_text[i + j - 1] = NULL;
-        free(c_text);
-        command->data = new_text;
+    if (redir_len > 1) return false;
+    new_text = malloc((matrix_len(c_text) + redir_len) * sizeof(char *));
+    ASSERT_MALLOC(new_text, true);
+    for (; c_text && c_text[i]; i++) new_text[i] = c_text[i];
+    for (; r_text[j]; j++) {
+        new_text[i + j - 1] = r_text[j];
+        r_text[j] = NULL;
     }
+    new_text[i + j - 1] = NULL;
+    free(c_text);
+    command->data = new_text;
+    return false;
 }
 
 int use_in(ast_t *node, UNUSED int to_read, int to_write, head_t *head)
@@ -43,7 +43,10 @@ int use_in(ast_t *node, UNUSED int to_read, int to_write, head_t *head)
     int fd = 0;
     char **in = NULL;
 
-    order_redir(node->left, node->right);
+    if (order_redir(node->left, node->right)) {
+        head->keep = false;
+        return 84;
+    }
     in = node->right->data;
     fd = open(in[0], O_RDONLY);
     return execute(node->left, fd, to_write, head);
@@ -54,7 +57,10 @@ int use_out(ast_t *node, int to_read, UNUSED int to_write, head_t *head)
     int fd = 0;
     char **out = NULL;
 
-    order_redir(node->left, node->right);
+    if (order_redir(node->left, node->right)) {
+        head->keep = false;
+        return 84;
+    }
     out = node->right->data;
     fd = open(out[0], OPEN_E, 0664);
     return execute(node->left, to_read, fd, head);
@@ -65,7 +71,10 @@ int use_dout(ast_t *node, int to_read, UNUSED int to_write, head_t *head)
     int fd = 0;
     char **out = NULL;
 
-    order_redir(node->left, node->right);
+    if (order_redir(node->left, node->right)) {
+        head->keep = false;
+        return 84;
+    }
     out = node->right->data;
     fd = open(out[0], OPEN_B, 0664);
     return execute(node->left, to_read, fd, head);
@@ -78,8 +87,10 @@ int use_din(ast_t *node, UNUSED int to_read, int to_write, head_t *head)
     size_t r = 0;
     char **key = NULL;
     int len = 0;
-
-    order_redir(node->left, node->right);
+    if (order_redir(node->left, node->right)) {
+        head->keep = false;
+        return 84;
+    }
     pipe(pfd);
     key = node->right->data;
     len = strlen(key[0]);
