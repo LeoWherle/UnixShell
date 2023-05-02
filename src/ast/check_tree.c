@@ -20,6 +20,11 @@ bool check_nb_par(ast_t *node)
         WRITE_MUCH_CLOSE;
         return false;
     }
+    if (node->data == par_open && node->left->data == NULL &&
+        node->right->right->data == NULL && node->right->left->data == NULL) {
+        WRITE_NULL_S;
+        return false;
+    }
     return true;
 }
 
@@ -37,17 +42,22 @@ bool check_ambiguous_redir(ast_t *node)
 
 bool check_null(ast_t *node)
 {
-    if (node->left->data == NULL || node->right->data == NULL) {
-        if (node->data == par_open || node->data == par_close) {
-            return true;
-        }
+    if (node->right->data == NULL) {
         if (node->data == use_din || node->data == use_dout ||
             node->data == use_in || node->data == use_out) {
             WRITE_NULL_R;
             return false;
         }
-        WRITE_NULL_S;
-        return false;
+    }
+    if (node->left->data == NULL || node->right->data == NULL) {
+        if (node->data == par_open || node->data == par_close) {
+            return true;
+        }
+        if (node->data == use_or ||
+            node->data == use_and || node->data == use_pipe) {
+            WRITE_NULL_S;
+            return false;
+        }
     }
     return true;
 }

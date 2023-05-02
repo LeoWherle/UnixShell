@@ -16,6 +16,8 @@ int execute(ast_t *node, int to_read, int to_write, head_t *head)
     int (*ptr)(ast_t *, int, int, head_t *) = NULL;
     int r = 0;
 
+    if (!node || !node->data)
+        return 0;
     if (node->type == SEP) {
         ptr = node->data;
         r = ptr(node, to_read, to_write, head);

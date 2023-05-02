@@ -11,6 +11,9 @@ int matrix_len(char **m)
 {
     int i = 0;
 
-    for (; m[i] != NULL; i++);
+    if (!m)
+        return 0;
+    while (m[i] != NULL)
+        i++;
     return i;
 }
