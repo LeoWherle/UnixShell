@@ -53,7 +53,26 @@ static char *get_alias(char *command_part, list_t *aliases)
     return command_part;
 }
 
-char *change_command(char *command, list_t *aliases)
+static char *get_env(char *command_part, env_t *env)
+{
+    char *command = NULL;
+    char *var_name = NULL;
+    env_t *env_var = NULL;
+
+    if (command_part[0] == '$') {
+        env_var = find_env(env, command_part + 1);
+        if (env_var->line) {
+            var_name = command_part + 1;
+            command = strdup(env_var->line + strlen(var_name) + 1);
+            ASSERT_MALLOC(command, NULL);
+            free(command_part);
+            return command;
+        }
+    }
+    return command_part;
+}
+
+char *change_command(char *command, head_t *head)
 {
     char **command_split = my_str_to_word_array(command, ' ');
 
@@ -62,8 +81,10 @@ char *change_command(char *command, list_t *aliases)
     for (int i = 0; command_split[i]; i++) {
         if (i != 0 && strcmp(command_split[i - 1], "alias") == 0)
             continue;
-        command_split[i] = get_alias(command_split[i], aliases);
-        ASSERT_MALLOC(command_split[i], NULL);
+        command_split[i] = get_alias(command_split[i], head->alias);
+        ASSERT_PTR(command_split[i], NULL);
+        command_split[i] = get_env(command_split[i], head->first);
+        ASSERT_PTR(command_split[i], NULL);
     }
     return get_full_command(command_split);
 }

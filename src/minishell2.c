@@ -41,7 +41,7 @@ int separator_handler(char *command_line, head_t *head)
 
     if (only_st(command_line)) return 0;
     if (!command_line) return 84;
-    command_line = change_command(command_line, head->alias);
+    command_line = change_command(command_line, head);
     head->stdin_copy = dup(0);
     head->stdout_copy = dup(1);
     command_tree = build_ast(command_line, 0);
