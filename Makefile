@@ -25,7 +25,12 @@ NAME = 42sh
 SRC = 	src/minishell.c	\
 		src/minishell2.c	\
 		src/env.c	\
-		src/prompt.c \
+		src/prompt/prompt.c \
+		src/prompt/navigation.c \
+		src/prompt/prompt_movement.c \
+		src/prompt/prompt_ansi.c \
+		src/prompt/prompt_classic.c \
+		src/prompt/file.c \
 		src/command_gestion.c	\
 		src/command_builtin.c	\
 		src/alias/parse_aliases.c	\

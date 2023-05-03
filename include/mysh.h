@@ -88,8 +88,6 @@
 
     int separator_handler(char *command_line, head_t *head);
 
-    /*pretty print*/
-    void print_shell(void);
 
     /*free functions*/
     void free_alias(void *);
