@@ -30,11 +30,13 @@ static void disable_raw_mode(struct termios *orig_termios)
 
 static void print_state(textfield_t *field)
 {
+    int prompt_len = 0;
+
     if (isatty(STDIN_FILENO)) {
         printf("\033[2K\r");
-        int lentt = print_shell();
+        prompt_len = print_shell();
         printf("%s", field->buffer);
-        printf("\033[%dG", lentt + field->cursor_pos + 1);
+        printf("\033[%dG", prompt_len + field->cursor_pos + 1);
         fflush(stdout);
     }
 }
