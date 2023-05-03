@@ -8,13 +8,16 @@
 #ifndef CLIST_H_
     #define CLIST_H_
     #ifndef ERRORHANDLING_H_
+        #define ERRORHANDLING_H_
         #define ERROR 84
         #define SUCCESS 0
         #define UNUSED __attribute__((unused))
         #define DEPRECATED __attribute__((deprecated))
+        #define WUR __attribute__((warn_unused_result))
+        #define NONULL __attribute__((nonnull(arg1, arg2, ...)))
         #define LIKELY(x)       __builtin_expect((x),1)
         #define UNLIKELY(x)     __builtin_expect((x),0)
-        #define ASSERT_MALLOC(ptr, ret) if (UNLIKELY(ptr == NULL)) return ret;
+        #define ASSERT_MALLOC(ptr, retn) if (UNLIKELY(ptr == NULL)) return retn;
         #define ASSERT_PTR(ptr, retrn) if (ptr == NULL) return retrn;
     #endif /* !ERRORHANDLING_H_ */
 
@@ -67,11 +70,11 @@
         void (*destroy)(list_t *list, fun_free_data);
     } list_interface_t;
 
-    node_t *node_init(any_t data);
-    list_t *list_init(void);
+    WUR node_t *node_init(any_t data);
+    WUR list_t *list_init(void);
 
-    int node_append(list_t *list, any_t data);
-    int node_insert(list_t *list, any_t data);
+    WUR int node_append(list_t *list, any_t data);
+    WUR int node_insert(list_t *list, any_t data);
 
     any_t node_popf(list_t *list);
     any_t node_pop(list_t *list, any_t data);
@@ -82,15 +85,15 @@
     void list_foreach_wargs(list_t *list, fun_foreach_wargs,
                             void *arg1, void *arg2);
     void list_foreach(list_t *list, fun_foreach);
-    node_t *node_find(list_t *list, const any_t data);
+    WUR node_t *node_find(list_t *list, const any_t data);
 
     int node_delete(list_t *list, any_t data, fun_free_data);
     int node_destroy(list_t *list, fun_free_data);
     void list_destroy(list_t *list, fun_free_data);
 
     void list_print(list_t *list, fun_print, const char *sep);
-    any_t *array_build(list_t *list);
-    list_t *list_build(char **array);
+    WUR any_t *array_build(list_t *list);
+    WUR list_t *list_build(char **array);
 
     list_t *list_dup(list_t *list, any_t (*dup_data)(any_t data));
 

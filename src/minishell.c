@@ -8,10 +8,13 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include "mysh.h"
+
+extern char **environ;
 
 char **find_path(env_t *env)
 {
@@ -31,6 +34,8 @@ char **find_path(env_t *env)
 
 void free_matrix(char **matrix)
 {
+    if (!matrix)
+        return;
     for (int i = 0; matrix[i] != NULL; i++)
         free(matrix[i]);
     free(matrix);
@@ -51,18 +56,19 @@ static int loop(int state, head_t *head)
     int r = 0;
 
     if (state)
-        write(1, "$> ", 3);
+        print_shell();
     while (head->keep && getline(&read, &x, stdin) != EOF) {
         remove_line_break(read);
         if (read[0] != '\0')
             r = separator_handler(read, head);
         if (state && head->keep)
-            write(1, "$> ", 3);
+            print_shell();
         read = NULL;
     }
     free(read);
     free_env(head->first);
     free(head->home);
+    list_destroy(head->alias, free_alias);
     return r;
 }
 
@@ -71,8 +77,10 @@ int main(int ac, char const**, char * const *e)
     head_t head = {0};
     int state = 0;
     int r = 0;
-
     if (ac != 1 || !e[0])
+        return 84;
+    create_rc_file(&head);
+    if (!head.alias)
         return 84;
     state = isatty(0);
     make_env(e, &head);

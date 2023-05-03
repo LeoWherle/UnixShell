@@ -36,7 +36,7 @@ static int solve_this_shit(char *shit, head_t *head, int *r)
     return 0;
 }
 
-void my_exit(char **command_line, head_t *head, int *r)
+int my_exit(char **command_line, head_t *head, int *r)
 {
     int len = 0;
 
@@ -52,9 +52,10 @@ void my_exit(char **command_line, head_t *head, int *r)
             write(2, "exit: Expression Syntax.\n", 25);
         *r = 1;
     }
+    return *r;
 }
 
-int my_env(char **command_line, head_t *head)
+int my_env(char **command_line, head_t *head, int *ret)
 {
     struct stat extract = {0};
     if (matrix_len(command_line) == 1) {
@@ -62,18 +63,56 @@ int my_env(char **command_line, head_t *head)
             write(1, env->line, my_strlen(env->line));
             write(1, "\n", 1);
         }
-        return 0;
+        return *ret = 0;
     } else {
         write(2, "env : '", 7);
         write(2, command_line[1], my_strlen(command_line[1]));
         if (lstat(command_line[1], &extract) == -1) {
             write(2, "': No such file or directory\n", 29);
-            return 127;
+            return *ret = 127;
         } if (S_ISREG(extract.st_mode)) {
             write(2, "': No such file or directory\n", 29);
-            return 127;
+            return *ret = 127;
         }
         write(2, "' Permission denied\n", 20);
-        return 126;
+        return *ret = 126;
     }
+}
+
+static int print_echo(char *text, char **command_line, int i)
+{
+    int index = 0;
+
+    if (text == NULL) {
+        write(1, "\n", 1);
+        return 0;
+    }
+    for (index = 0; text[index] != '\0'; index++) {
+        if ((text[index] != '"' && text[index] != '\'' && text[index] != '\\')
+        || text[index - 1] == '\\')
+            write(1, &text[index], 1);
+    }
+    if (command_line[i + 1] != NULL && command_line[i + 1][0] != '-')
+        write(1, " ", 1);
+    return 0;
+}
+
+int my_echo(char **command_line, UNUSED head_t *head, int *ret)
+{
+    char *text = NULL;
+    int i = 1;
+    int line_break = 1;
+
+    while (command_line[i] != NULL) {
+        if (my_strcmp(command_line[i], "-n") == 0)
+            line_break = 0;
+        if (command_line[i][0] != '-') {
+            text = command_line[i];
+            print_echo(text, command_line, i);
+        }
+        i++;
+    }
+    if (line_break == 1)
+        write(1, "\n", 1);
+    return *ret = 0;
 }

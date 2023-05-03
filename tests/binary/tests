@@ -124,3 +124,116 @@ TESTS=
   echo 'exit 45|cat /etc/resolv.conf'
 [912-END]
 
+[913]
+NAME="Nath scary command modified"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | grep d | cat -e > out ; cat -e < out ; cat < out'
+  echo 'rm -f out'
+[913-END]
+
+[914]
+NAME="long pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l /etc | cat | grep sh | cat -e | cat -e"
+[914-END]
+
+[915]
+NAME="&& and ||"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls && ls'
+  echo 'ls -l || ls'
+  echo 'wow && ls'
+  echo 'wow || ls -l'
+  echo 'wow && ls -la || ls'
+[915-END]
+
+[916]
+NAME="exit test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'exit'
+[916-END]
+
+[917]
+NAME="exit nb test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'exit 26'
+[917-END]
+
+[918]
+NAME="simple echo"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo arbre'
+  echo 'echo arbre | cat -e'
+  echo 'Wow26'
+[918-END]
+
+[919]
+NAME="echo with option -n"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo -n arbre'
+  echo 'echo -n wow26 | cat -e'
+[919-END]
+
+[921]
+NAME="empty command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ''
+  echo ' '
+[921-END]
+
+[922]
+NAME="basic * test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat * | grep Test'
+[922-END]
+
+[923]
+NAME="my* test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat my*'
+[923-END]
+
+[924]
+NAME="folder/* test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat test_folder/*'
+[924-END]
+
+[925]
+NAME="echo with '$ PATH'"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo $PATH'
+[925-END]
+
+[926]
+NAME="echo with '$ ?'"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls'
+  echo 'echo $?'
+[926-END]

@@ -45,7 +45,9 @@ list_t *list_dup(list_t *list, any_t (*dup_data)(any_t data))
     while (node != NULL) {
         data = dup_data(node->data);
         ASSERT_MALLOC(data, NULL)
-        node_append(new_list, node->data);
+        if (node_append(new_list, node->data)) {
+            return NULL;
+        }
         node = node->next;
     }
     return new_list;
