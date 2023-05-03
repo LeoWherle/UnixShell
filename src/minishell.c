@@ -53,14 +53,13 @@ static int loop(int state, head_t *head)
 {
     char *read = NULL;
     size_t x = 0;
-    int r = 0;
 
     if (state)
         print_shell();
     while (head->keep && getline(&read, &x, stdin) != EOF) {
         remove_line_break(read);
         if (read[0] != '\0')
-            r = separator_handler(read, head);
+            head->lr = separator_handler(read, head);
         if (state && head->keep)
             print_shell();
         read = NULL;
@@ -69,7 +68,7 @@ static int loop(int state, head_t *head)
     free_env(head->first);
     free(head->home);
     list_destroy(head->alias, free_alias);
-    return r;
+    return head->lr;
 }
 
 int main(int ac, char const**, char * const *e)
