@@ -26,11 +26,12 @@ SRC = 	src/minishell.c	\
 		src/minishell2.c	\
 		src/env.c	\
 		src/prompt/prompt.c \
-		src/prompt/navigation.c \
-		src/prompt/prompt_movement.c \
-		src/prompt/prompt_ansi.c \
-		src/prompt/prompt_classic.c \
-		src/prompt/file.c \
+		src/prompt/ansi_handle.c \
+		src/prompt/char_handle.c \
+		src/prompt/char_handlers/basic_keys.c \
+		src/prompt/esc_handlers/arrow_keys.c \
+		src/prompt/esc_handlers/extra_keys.c \
+		src/prompt/read_line.c \
 		src/command_gestion.c	\
 		src/command_builtin.c	\
 		src/alias/parse_aliases.c	\

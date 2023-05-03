@@ -50,8 +50,6 @@ void remove_line_break(char *src)
     src[i] = '\0';
 }
 
-int read_line(char **output);
-
 static int loop(int state, head_t *head)
 {
     char *read = NULL;
