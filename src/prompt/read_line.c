@@ -48,18 +48,18 @@ int read_line(char **output)
     char c = 0;
 
     enable_raw_mode(&orig_termios);
-    while (1) {
-        c = getchar();
-        if (c == EOF || c == '\4') {
-            disable_raw_mode(&orig_termios);
-            return EOF;
-        }
+    c = getchar();
+    while (c != EOF && c != '\4') {
         if (handle_char(&field, c)) {
             break;
         }
         print_state(&field);
+        c = getchar();
+    }
+    disable_raw_mode(&orig_termios);
+    if (c != EOF && c == '\4') {
+        return EOF;
     }
     *output = strdup(field.buffer);
-    disable_raw_mode(&orig_termios);
     return strlen(field.buffer);
 }
