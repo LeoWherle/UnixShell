@@ -16,6 +16,7 @@ int delete_key(textfield_t *field, char seq[])
             memmove(field->buffer + field->cursor_pos,
                 field->buffer + field->cursor_pos + 1,
                 strlen(field->buffer) - field->cursor_pos);
+            field->bf_size--;
         }
     }
     return 0;

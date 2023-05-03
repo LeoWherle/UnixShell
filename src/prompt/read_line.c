@@ -61,5 +61,5 @@ int read_line(char **output)
         return EOF;
     }
     *output = strdup(field.buffer);
-    return strlen(field.buffer);
+    return field.bf_size;
 }

@@ -26,8 +26,9 @@ int backspace_key(textfield_t *field)
     if (field->cursor_pos > 0) {
         memmove(field->buffer + field->cursor_pos - 1,
             field->buffer + field->cursor_pos,
-            strlen(field->buffer) - field->cursor_pos + 1);
+            field->bf_size - field->cursor_pos + 1);
         (field->cursor_pos)--;
+        field->bf_size--;
     }
     return 0;
 }

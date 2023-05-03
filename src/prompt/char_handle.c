@@ -30,9 +30,10 @@ int handle_char(textfield_t *field, char c)
     if (field->cursor_pos < MAX_INPUTLINE - 1) {
         memmove(field->buffer + field->cursor_pos + 1,
             field->buffer + field->cursor_pos,
-            strlen(field->buffer) - field->cursor_pos);
+            field->bf_size - field->cursor_pos);
         field->buffer[field->cursor_pos] = c;
         field->cursor_pos++;
+        field->bf_size++;
     }
     if (field->cursor_pos == MAX_INPUTLINE - 1) {
         return 1;

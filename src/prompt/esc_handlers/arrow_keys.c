@@ -22,7 +22,7 @@ int down_arrow(UNUSED textfield_t *field, UNUSED char seq[])
 
 int right_arrow(textfield_t *field, UNUSED char seq[])
 {
-    if (field->cursor_pos < strlen(field->buffer)) {
+    if (field->cursor_pos < field->bf_size) {
         field->cursor_pos++;
     }
     return 0;
