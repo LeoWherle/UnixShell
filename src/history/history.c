@@ -43,16 +43,6 @@ void histroy_destroy(void *ptr)
     free(history);
 }
 
-void print_history(list_t *history)
-{
-    history_t *line = NULL;
-
-    for (node_t *node = history->head; node; node = node->next) {
-        line = node->data;
-        printf("\t%d\t%s\t%s\n", line->nb, line->time, line->command);
-    }
-}
-
 char *find_com_in_history(list_t *history, char *to_find)
 {
     history_t *line = NULL;

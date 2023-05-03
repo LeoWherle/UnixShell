@@ -34,4 +34,5 @@ void free_head(head_t *head)
     if (head->path)
         free_matrix(head->path);
     list_destroy(head->history, histroy_destroy);
+    list_destroy(head->alias, free_alias);
 }

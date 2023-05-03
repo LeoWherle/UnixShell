@@ -43,6 +43,8 @@ SRC = 	src/minishell.c	\
 		src/ast/par.c	\
 		src/ast/check_tree.c	\
 		src/history/history.c	\
+		src/history/history_print.c	\
+		src/history/history_builtin.c	\
 
 
 TEST_CRIT	=	\

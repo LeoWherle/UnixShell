@@ -39,7 +39,7 @@ int separator_handler(char *command_line, head_t *head)
     ast_t *command_tree = NULL;
     int r = 0;
 
-    if (only_st(command_line)) return 0;
+    if (only_st(command_line)) return head->lr;
     if (!command_line) return 84;
     command_line = change_command(command_line, head);
     head->stdin_copy = dup(0);
