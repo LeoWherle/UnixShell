@@ -45,6 +45,7 @@ SRC = 	src/minishell.c	\
 		src/history/history.c	\
 		src/history/history_print.c	\
 		src/history/history_builtin.c	\
+		src/history/history_parse.c	\
 
 
 TEST_CRIT	=	\

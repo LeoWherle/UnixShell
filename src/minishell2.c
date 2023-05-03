@@ -10,8 +10,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
+#include <string.h>
 #include "mysh.h"
 #include "ast.h"
+#include "history.h"
 
 void create_rc_file(head_t *head)
 {
@@ -34,14 +36,28 @@ bool only_st(char *line)
     return false;
 }
 
+char *pre_parsing(char *command_line, head_t *head)
+{
+    command_line = pick_history(command_line, head);
+    if (!command_line)
+        return NULL;
+    command_line = change_command(command_line, head);
+    if (!command_line) {
+        head->lr = 84;
+        return NULL;
+    }
+    return command_line;
+}
+
 int separator_handler(char *command_line, head_t *head)
 {
     ast_t *command_tree = NULL;
     int r = 0;
 
-    if (only_st(command_line)) return head->lr;
     if (!command_line) return 84;
-    command_line = change_command(command_line, head);
+    if (only_st(command_line)) return head->lr;
+    command_line = pre_parsing(command_line, head);
+    if (!command_line) return head->lr;
     head->stdin_copy = dup(0);
     head->stdout_copy = dup(1);
     command_tree = build_ast(command_line, 0);

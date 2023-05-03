@@ -8,10 +8,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 #include "history.h"
 #include "errorh.h"
 #include "clist.h"
+#include "mysh.h"
 
 history_t *history_create(char *command)
 {
@@ -19,6 +21,7 @@ history_t *history_create(char *command)
     history_t *new = NULL;
     time_t rawtime = {0};
     struct tm *timeinfo = NULL;
+    char *date = NULL;
 
     new = malloc(sizeof(history_t));
     ASSERT_MALLOC(new, NULL);
@@ -26,9 +29,10 @@ history_t *history_create(char *command)
     ASSERT_MALLOC(new->command, NULL);
     time(&rawtime);
     timeinfo = localtime(&rawtime);
-    new->time = asctime(timeinfo);
+    date = asctime(timeinfo);
+    new->time = strndup(&date[10], 6);
     ASSERT_MALLOC(new->time, NULL);
-    free(timeinfo);
+    new->horodate = NULL;
     new->nb = nb;
     nb++;
     return new;
@@ -40,6 +44,8 @@ void histroy_destroy(void *ptr)
 
     free(history->command);
     free(history->time);
+    if (history->horodate)
+        free(history->horodate);
     free(history);
 }
 
@@ -49,7 +55,7 @@ char *find_com_in_history(list_t *history, char *to_find)
     int len = 0;
 
     len = strlen(to_find);
-    for (node_t *node = history->head; node; node = node->next) {
+    for (node_t *node = history->tail; node; node = node->prev) {
         line = node->data;
         if (strncmp(line->command, to_find, len) == 0)
             return line->command;
