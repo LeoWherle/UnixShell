@@ -211,15 +211,16 @@ NAME="basic * test"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'cat * | grep Test'
+  echo 'cd test_folder'
+  echo 'cat *'
 [922-END]
 
 [923]
-NAME="my* test"
+NAME="*test"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'cat my*'
+  echo 'find test*'
 [923-END]
 
 [924]
