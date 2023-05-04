@@ -7,6 +7,7 @@
 
 #ifndef GLOBBER_H
     #define GLOBBER_H
+    #define IS_GLOCHAR(c) (c == '*' || c == '?' || c == '[')
     #include "clist.h"
 
     typedef struct glob_handler_s {
@@ -14,16 +15,23 @@
         int (*handler)(const char *, const char *);
     } glob_handler_t;
 
-    list_t *reslist_from_ppattern(list_t *elems, const char *prefix);
-    char *get_all_matches(const char *pattern);
+    list_t *reslist_from_ppattern(char **elems, const char *prefix, int depth);
 
-    list_t *get_contained_matching(const char *pattern, const char *prefix);
-    list_t *get_dir_contained_matching(const char *pattern, const char *prefix);
-    void rec_match_find(list_t *elems, list_t *res);
+    void any_concerned(list_t *list, const char *pattern,
+        const char *prefix, const char *entryn);
+    void dir_concerned(list_t *list, const char *pattern,
+        const char *prefix, const char *entryn);
+    list_t *get_concerned(const char *pattern, const char *prefix,
+        void (*assert)(list_t *, const char *, const char *, const char *));
 
-    list_t *parse_pattern(const char *pattern);
     char *str_from_list(list_t *list);
     void add_prefix_to_list(list_t *list, const char *prefix);
+    void insert_list_in_tab(char ***tab, list_t *list, int i);
+    char **list_to_tab(list_t *list);
+
+    char **parse_pattern(const char *pattern);
+    void add_prefix_to_str(char **str, const char *prefix);
+    int is_valid_pattern(const char *pattern);
 
     int is_match(const char *pattern, const char *str);
 

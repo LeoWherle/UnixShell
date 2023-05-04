@@ -41,10 +41,12 @@ SRC = 	src/minishell.c	\
 		src/ast/sep.c	\
 		src/ast/par.c	\
 		src/ast/check_tree.c	\
-		src/globbings/get_matches.c	\
+		src/globbings/match_concerned.c	\
 		src/globbings/glob_handlers.c	\
-		src/globbings/glob_tools.c	\
+		src/globbings/match_tools.c	\
+		src/globbings/match_list.c	\
 		src/globbings/match_maker.c	\
+		src/globbings/rec_matching.c	\
 		src/globbings/match.c	\
 		src/globbings/sqbracket_handlers.c
 
