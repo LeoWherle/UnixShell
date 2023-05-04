@@ -29,7 +29,6 @@ static char *cat_command(char **builtin_split)
         my_strcat(command, " ");
     }
     command[len - 1] = '\0';
-    printf("command: %s\n", command);
     return command;
 }
 

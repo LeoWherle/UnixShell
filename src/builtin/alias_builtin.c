@@ -65,11 +65,11 @@ int alias_builtin(char **command, head_t *head, int *ret)
     if (len >= 3) {
         if (strcmp(command[1], "alias") == 0) {
             printf("alias: Too dangerous to alias that.\n");
-            return 1;
+            return *ret = 1;
         }
         if (change_alias(command, head) == 84)
             return 84;
-        return 0;
+        return *ret = 0;
     }
     return *ret = print_alias(command, head, ret);
 }

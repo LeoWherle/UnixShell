@@ -76,3 +76,22 @@ void free_alias(void *void_alias)
     free(alias->command);
     free(alias);
 }
+
+char *get_alias(char *command_part, list_t *aliases)
+{
+    char *command = NULL;
+    node_t *ali = aliases->head;
+    alias_t *data = NULL;
+
+    while (ali) {
+        data = ali->data;
+        if (strcmp(data->alias, command_part) == 0) {
+            free(command_part);
+            command = strdup(data->command);
+            ASSERT_MALLOC(command, NULL);
+            return command;
+        }
+        ali = ali->next;
+    }
+    return command_part;
+}
