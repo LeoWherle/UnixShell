@@ -41,25 +41,39 @@ static void print_state(textfield_t *field)
     }
 }
 
+int terminal_loop(struct termios *orig_termios, textfield_t *field)
+{
+    char c = 0;
+
+    c = getchar();
+    while (c != EOF && c != '\4') {
+        if (handle_char(field, c)) {
+            break;
+        }
+        print_state(field);
+        c = getchar();
+    }
+    disable_raw_mode(orig_termios);
+    if (c != EOF && c == '\4') {
+        return EOF;
+    }
+    return field->bf_size;
+}
+
 int read_line(char **output)
 {
     struct termios orig_termios;
     textfield_t field = {.bf_size = 0, .cursor_pos = 0};
-    char c = 0;
+    int ret = 0;
 
-    enable_raw_mode(&orig_termios);
-    c = getchar();
-    while (c != EOF && c != '\4') {
-        if (handle_char(&field, c)) {
-            break;
-        }
-        print_state(&field);
-        c = getchar();
+    size_t size = 0;
+
+    if (!isatty(STDIN_FILENO)) {
+        return getline(output, &size, stdin);
+    } else {
+        enable_raw_mode(&orig_termios);
+        ret = terminal_loop(&orig_termios, &field);
+        *output = strdup(field.buffer);
     }
-    disable_raw_mode(&orig_termios);
-    if (c != EOF && c == '\4') {
-        return EOF;
-    }
-    *output = strdup(field.buffer);
-    return field.bf_size;
+    return ret;
 }

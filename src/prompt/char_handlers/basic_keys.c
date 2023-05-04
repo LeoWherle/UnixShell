@@ -5,14 +5,17 @@
 ** basic_keys
 */
 
-#include <string.h>
 #include <stdio.h>
-#include "prompt.h"
+#include <string.h>
+#include <unistd.h>
 #include "errorh.h"
+#include "prompt.h"
 
 int enter_key(UNUSED textfield_t *field)
 {
-    putchar('\n');
+    if (isatty(STDIN_FILENO)) {
+        putchar('\n');
+    }
     return 1;
 }
 

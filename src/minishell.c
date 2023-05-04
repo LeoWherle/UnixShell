@@ -15,8 +15,6 @@
 #include "mysh.h"
 #include "prompt.h"
 
-extern char **environ;
-
 char **find_path(env_t *env)
 {
     char **e_path = NULL;
@@ -66,6 +64,7 @@ static int loop(int state, head_t *head)
         read = NULL;
         free(read);
     }
+    free(read);
     free_env(head->first);
     free(head->home);
     list_destroy(head->alias, free_alias);
