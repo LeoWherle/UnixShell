@@ -16,5 +16,6 @@
     } alias_t;
 
     list_t *get_alias_list(void);
+    char *get_alias(char *command_part, list_t *aliases);
 
 #endif /* !ALIAS_H */

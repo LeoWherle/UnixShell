@@ -74,6 +74,7 @@
     int path_command(char **, head_t *);
     bool exec_special_case(char **, head_t *, int *);
     char *change_command(char *, head_t *);
+    int globbings_change_command(char ***);
 
     /*special_command*/
     int change_dir(char **, head_t *, int *ret);
@@ -91,4 +92,7 @@
 
     /*free functions*/
     void free_alias(void *);
+    bool create_head(head_t *head, char * const *e);
+    void free_head(head_t *head);
+
 #endif /*MYSH_H*/

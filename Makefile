@@ -23,6 +23,7 @@ RESET		=	\033[0m
 NAME = 42sh
 
 SRC = 	src/minishell.c	\
+		src/head.c	\
 		src/minishell2.c	\
 		src/env.c	\
 		src/prompt/prompt.c \
@@ -47,11 +48,25 @@ SRC = 	src/minishell.c	\
 		src/ast/sep.c	\
 		src/ast/par.c	\
 		src/ast/check_tree.c	\
+		src/history/history.c	\
+		src/history/history_print.c	\
+		src/history/history_builtin.c	\
+		src/history/history_parse.c	\
+		src/globbings/match_concerned.c	\
+		src/globbings/glob_handlers.c	\
+		src/globbings/match_tools.c	\
+		src/globbings/match_list.c	\
+		src/globbings/match_maker.c	\
+		src/globbings/rec_matching.c	\
+		src/globbings/match.c	\
+		src/globbings/sqbracket_handlers.c
 
 
-TEST_CRIT	=	\
+TEST_CRIT	=	tests/src/match_tests.c
 
-SRC_CRIT = $(SRC)
+SRC_CRIT =	src/globbings/sqbracket_handlers.c	\
+			src/globbings/glob_handlers.c	\
+			src/globbings/match.c
 
 OBJ = 	$(SRC:.c=.o)
 
@@ -135,9 +150,9 @@ perf: lib_build $(OBJ)
 
 tests_run:
 	@for i in $(LIBS); do $(MAKE) -C $$i tests_run; done
-#	@gcc -o unit-tests $(SRC_CRIT) $(TEST_CRIT) $(CFLAGS) $(CRITFLAGS)
-#	@echo -e [$(GREEN)Launch $(NAME) tests$(RESET)]
-#	@./unit-tests
+	@gcc -o unit-tests $(SRC_CRIT) $(TEST_CRIT) $(CFLAGS) $(CRITFLAGS)
+	@echo -e "[$(GREEN)Launch $(NAME) tests$(RESET)]"
+	@./unit-tests -j1
 
 binary_tests_run: $(NAME)
 	@cp $(NAME) tests/binary/
