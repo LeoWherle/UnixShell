@@ -15,7 +15,7 @@
     typedef struct history {
         int nb;
         char *time;
-        char *horodate;
+        long int horodate;
         char *command;
     } history_t;
 
