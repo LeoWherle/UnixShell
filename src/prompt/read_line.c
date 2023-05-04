@@ -54,7 +54,7 @@ int terminal_loop(struct termios *orig_termios, textfield_t *field)
         c = getchar();
     }
     disable_raw_mode(orig_termios);
-    if (c != EOF && c == '\4') {
+    if (c == EOF || c == '\4') {
         return EOF;
     }
     return field->bf_size;
