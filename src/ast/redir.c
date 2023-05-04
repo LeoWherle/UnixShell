@@ -49,6 +49,10 @@ int use_in(ast_t *node, UNUSED int to_read, int to_write, head_t *head)
     }
     in = node->right->data;
     fd = open(in[0], O_RDONLY);
+    if (fd == -1) {
+        fprintf(stderr, "%s: No such file or directory.\n", in[0]);
+        return 1;
+    }
     return execute(node->left, fd, to_write, head);
 }
 
@@ -63,6 +67,10 @@ int use_out(ast_t *node, int to_read, UNUSED int to_write, head_t *head)
     }
     out = node->right->data;
     fd = open(out[0], OPEN_E, 0664);
+    if (fd == -1) {
+        head->keep = false;
+        return 84;
+    }
     return execute(node->left, to_read, fd, head);
 }
 
@@ -77,6 +85,10 @@ int use_dout(ast_t *node, int to_read, UNUSED int to_write, head_t *head)
     }
     out = node->right->data;
     fd = open(out[0], OPEN_B, 0664);
+    if (fd == -1) {
+        head->keep = false;
+        return 84;
+    }
     return execute(node->left, to_read, fd, head);
 }
 

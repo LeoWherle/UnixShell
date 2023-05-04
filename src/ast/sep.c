@@ -5,6 +5,7 @@
 ** sep handler
 */
 
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -76,6 +77,7 @@ int use_pipe(ast_t *node, int to_read, int to_write, head_t *head)
     int pfd[2] = {0};
     int pid = 0;
     int r = 0;
+    int state = 0;
 
     pipe(pfd);
     pid = fork();
@@ -86,6 +88,7 @@ int use_pipe(ast_t *node, int to_read, int to_write, head_t *head)
     } else {
         close(pfd[1]);
         r = execute(node->right, pfd[0], to_write, head);
+        waitpid(pid, &state, 0);
         return r;
     }
 }
