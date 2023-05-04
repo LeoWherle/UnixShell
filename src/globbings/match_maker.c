@@ -61,6 +61,8 @@ int globbings_change_command(char ***commands)
             return 1;
         }
         tmp = spread_matches(tmp);
+        sort_matches(tmp->head);
+        move_dirs_to_end(tmp);
         insert_list_in_tab(commands, tmp, i);
     }
     return 0;

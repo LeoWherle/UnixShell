@@ -51,6 +51,7 @@ SRC = 	src/minishell.c	\
 		src/globbings/match_tools.c	\
 		src/globbings/match_list.c	\
 		src/globbings/match_maker.c	\
+		src/globbings/match_sort.c	\
 		src/globbings/rec_matching.c	\
 		src/globbings/match.c	\
 		src/globbings/sqbracket_handlers.c
