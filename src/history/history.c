@@ -32,7 +32,7 @@ history_t *history_create(char *command)
     date = asctime(timeinfo);
     new->time = strndup(&date[10], 6);
     ASSERT_MALLOC(new->time, NULL);
-    new->horodate = NULL;
+    new->horodate = rawtime;
     new->nb = nb;
     nb++;
     return new;
@@ -44,8 +44,6 @@ void histroy_destroy(void *ptr)
 
     free(history->command);
     free(history->time);
-    if (history->horodate)
-        free(history->horodate);
     free(history);
 }
 

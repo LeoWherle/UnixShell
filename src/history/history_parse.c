@@ -35,10 +35,9 @@ int last_command(char **d_command, int i, list_t *history)
 {
     char *new = NULL;
     history_t *line = NULL;
-
     line = (history->tail) ? history->tail->data : NULL;
-    for (int j = 0; d_command[i][j] != '\0'; j++) {
-        if (strncmp(&d_command[i][j], "!!", 2) == 0 && line) {
+    for (int j = 0; d_command[i][j] != '\0' && line; j++) {
+        if (strncmp(&d_command[i][j], "!!", 2) == 0) {
             new = malloc((strlen(d_command[i]) +
                 strlen(line->command) - 1) * sizeof(char));
             ASSERT_MALLOC(new, -1);
@@ -51,6 +50,7 @@ int last_command(char **d_command, int i, list_t *history)
             d_command[i] = new;
             return 1;
         }
+        if (d_command[i][j] == '!' && d_command[i][j + 1] != '!') return 0;
     }
     return 0;
 }
