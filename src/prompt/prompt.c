@@ -13,19 +13,23 @@
 #include "mysh.h"
 #include "ansi_colors.h"
 
-static void print_host(void)
+static int print_host(void)
 {
     char host_name[MAX_BUFFER_SIZE];
+    int length = 0;
 
     gethostname(host_name, MAX_BUFFER_SIZE);
     printf(BOLD RED"@"GREEN"%s:"RESET, host_name);
+    length = strlen(host_name) + 2;
+    return length;
 }
 
-static void print_dir(void)
+static int print_dir(void)
 {
     char *cwd = NULL;
     char *dir = NULL;
     char *token = NULL;
+    int length = 0;
 
     cwd = getcwd(cwd, 0);
     token = strtok(cwd, "/");
@@ -36,7 +40,9 @@ static void print_dir(void)
         token = strtok(NULL, "/");
     }
     printf(BOLD MAGENTA"%s"WHITE"]"RESET, dir);
+    length = strlen(dir) + 1;
     free(cwd);
+    return length;
 }
 
 static char *get_current_branch(void)
@@ -44,7 +50,7 @@ static char *get_current_branch(void)
     char buffer[MAX_BUFFER_SIZE];
     char command[MAX_BUFFER_SIZE] = BRANCH_COMMAND;
     char *branch_name = NULL;
-    FILE* fp;
+    FILE* fp = NULL;
 
     if ((fp = popen(command, "r")) == NULL) {
         return NULL;
@@ -59,25 +65,39 @@ static char *get_current_branch(void)
     return branch_name;
 }
 
-static void print_branch(void)
+static int print_branch(void)
 {
-    char *branch = get_current_branch();
+    char *branch = NULL;
+    int length = 0;
 
+    branch = get_current_branch();
     if (branch != NULL) {
         printf(BOLD YELLOW"[%s]"RESET, branch);
+        length = strlen(branch) + 2;
         free(branch);
     }
+    return length;
 }
 
-void print_shell(void)
+/**
+ * @brief Print the shell prompt with the current user, host, directory and
+ * current branch if there is one.
+ *
+ * @return the length of the printed prompt
+ */
+int print_shell(void)
 {
     char *user = NULL;
+    int length = 0;
 
     user = getenv("USER");
     DEBUG_ERROR_CHECK(user);
     printf(BOLD WHITE"["CYAN"%s"RESET, user);
-    print_host();
-    print_dir();
-    print_branch();
+    length += 1 + strlen(user);
+    length += print_host();
+    length += print_dir();
+    length += print_branch();
     printf(BOLD RED"$ "RESET);
+    length += 2;
+    return length;
 }

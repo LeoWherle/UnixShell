@@ -13,9 +13,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "mysh.h"
+#include "prompt.h"
 #include "rcfile.h"
-
-extern char **environ;
 
 char **find_path(env_t *env)
 {
@@ -53,17 +52,17 @@ void remove_line_break(char *src)
 static int loop(int state, head_t *head)
 {
     char *read = NULL;
-    size_t x = 0;
 
     if (state)
         print_shell();
-    while (head->keep && getline(&read, &x, stdin) != EOF) {
+    while (head->keep && read_line(&read) != EOF) {
         remove_line_break(read);
         if (read[0] != '\0')
             head->lr = separator_handler(read, head);
         if (state && head->keep)
             print_shell();
         read = NULL;
+        free(read);
     }
     free(read);
     return head->lr;
