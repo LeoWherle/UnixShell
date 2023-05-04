@@ -20,26 +20,51 @@ static int print_specific_alias(char **command, head_t *head)
     while (ali) {
         data = ali->data;
         if (strcmp(data->alias, command[1]) == 0) {
-            printf("%s\t(%s)\n", data->alias, data->command);
+            printf("%s\t%s\n", data->alias, data->command);
             return 0;
         }
         ali = ali->next;
     }
-    printf("alias %s not found\n", command[1]);
-    return 1;
+    return 0;
+}
+
+static void sort_conditon(alias_t **alias_list, int i, int j)
+{
+    alias_t *tmp = NULL;
+
+    if (strcmp(alias_list[i]->alias, alias_list[j]->alias) > 0) {
+        tmp = alias_list[i];
+        alias_list[i] = alias_list[j];
+        alias_list[j] = tmp;
+    }
+}
+
+static void sort_alias(alias_t **alias_list)
+{
+    int i = 0;
+    int j = 0;
+
+    for (i = 0; alias_list[i]; i++) {
+        for (j = i + 1; alias_list[j]; j++) {
+            sort_conditon(alias_list, i, j);
+        }
+    }
 }
 
 static int print_alias(char **command, head_t *head, int *ret)
 {
-    node_t *ali = head->alias->head;
     alias_t *data = NULL;
+    alias_t **alias_list = NULL;
 
     if (!command[1]) {
-        while (ali) {
-            data = ali->data;
-            printf("%s\t(%s)\n", data->alias, data->command);
-            ali = ali->next;
+        alias_list = (alias_t **)array_build(head->alias);
+        ASSERT_PTR(alias_list, 84);
+        sort_alias(alias_list);
+        for (int i = 0; alias_list[i]; i++) {
+            data = alias_list[i];
+            printf("%s\t%s\n", data->alias, data->command);
         }
+        free(alias_list);
     } else {
         *ret = print_specific_alias(command, head);
     }
