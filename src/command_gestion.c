@@ -80,6 +80,11 @@ int use_command(char **command_line, head_t *head)
 
     if (command_line[0] == NULL)
         return head->lr;
+    if (globbings_change_command(&command_line) == 1) {
+        write(2, command_line[0], my_strlen(command_line[0]));
+        write(2, ": No match.\n", 12);
+        return 1;
+    }
     if (access(command_line[0], F_OK) == 0) {
         if (access(command_line[0], X_OK) == 0 &&
         lstat(command_line[0], &extract) != -1 && !S_ISDIR(extract.st_mode))
