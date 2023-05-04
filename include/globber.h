@@ -8,6 +8,7 @@
 #ifndef GLOBBER_H
     #define GLOBBER_H
     #define IS_GLOCHAR(c) (c == '*' || c == '?' || c == '[')
+    #define IS_INRANGE(c, s, e) ((c >= s && c <= e) || (c >= e && c <= s))
     #include "clist.h"
 
     typedef struct glob_handler_s {
