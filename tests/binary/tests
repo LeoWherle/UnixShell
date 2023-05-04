@@ -189,13 +189,12 @@ TESTS=
 [919-END]
 
 [920]
-NAME="echo with option -e"
+NAME="multiple echo option -n"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'echo -e arbre'
-  echo 'echo -e arbre\n'
-  echo 'echo -e Wow26\t | cat -e'
+  echo 'echo -n arbre wow test chaise wow2'
+  echo 'echo -n wow2 test chaise 22 | cat -e'
 [920-END]
 
 [921]

@@ -59,7 +59,7 @@ node_t *node_init(any_t data)
     ASSERT_MALLOC(node, NULL)
     node->data = data;
     node->next = NULL;
-    node->next = NULL;
+    node->prev = NULL;
     return node;
 }
 

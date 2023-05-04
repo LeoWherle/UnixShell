@@ -93,4 +93,7 @@
 
     /*free functions*/
     void free_alias(void *);
+    bool create_head(head_t *head, char * const *e);
+    void free_head(head_t *head);
+
 #endif /*MYSH_H*/

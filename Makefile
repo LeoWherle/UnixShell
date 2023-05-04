@@ -23,6 +23,7 @@ RESET		=	\033[0m
 NAME = 42sh
 
 SRC = 	src/minishell.c	\
+		src/head.c	\
 		src/minishell2.c	\
 		src/env.c	\
 		src/prompt.c \
@@ -41,6 +42,10 @@ SRC = 	src/minishell.c	\
 		src/ast/sep.c	\
 		src/ast/par.c	\
 		src/ast/check_tree.c	\
+		src/history/history.c	\
+		src/history/history_print.c	\
+		src/history/history_builtin.c	\
+		src/history/history_parse.c	\
 
 
 TEST_CRIT	=	\

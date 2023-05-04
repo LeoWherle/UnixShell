@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include "mystr.h"
 
-int my_strlen(char const *str)
+static int my_fputstrlen(char const *str)
 {
     int i = 0;
 
@@ -21,5 +21,5 @@ int my_strlen(char const *str)
 
 void my_fputstr(int fd, char const *str)
 {
-    write(fd, str, my_strlen(str));
+    write(fd, str, my_fputstrlen(str));
 }
