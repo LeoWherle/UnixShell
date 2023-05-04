@@ -26,6 +26,7 @@ SRC = 	src/minishell.c	\
 		src/head.c	\
 		src/minishell2.c	\
 		src/env.c	\
+		src/chained_list_end.c	\
 		src/prompt/prompt.c \
 		src/prompt/ansi_handle.c \
 		src/prompt/char_handle.c \
