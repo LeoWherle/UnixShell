@@ -5,6 +5,7 @@
 ** sort files for auto complete
 */
 
+#include <unistd.h>
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
@@ -37,6 +38,21 @@ char *get_best_match(char **file_list)
     old_k--;
     best_match = strndup(file_list[0], old_k);
     return (best_match);
+}
+
+void print_fake_ls(char **file_list)
+{
+    int i = 1;
+
+    write(1, "\n", 1);
+    write(1, file_list[0], strlen(file_list[0]));
+    write(1, "*", 1);
+    while (file_list[i]) {
+        write(1, "\t", 1);
+        write(1, file_list[i], strlen(file_list[i]));
+        i++;
+    }
+    write(1, "\n", 1);
 }
 
 static void bubble_sort_files(char **file_list, int i, int j)

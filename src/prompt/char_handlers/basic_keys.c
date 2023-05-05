@@ -47,13 +47,13 @@ static char **init_file_list(char **file_list, textfield_t *field)
 int tab_key(textfield_t *field)
 {
     char **file_list = NULL;
-    char *command = NULL;
-    char *tmp = NULL;
+    char *command = NULL; char *tmp = NULL;
 
     file_list = init_file_list(file_list, field);
     ASSERT_PTR(file_list, 0);
     command = get_command(field->buffer);
-    get_corresponding_files(file_list, command);
+    file_list = get_corresponding_files(file_list, command);
+    ASSERT_PTR(file_list, 0);
     ASSERT_PTR(file_list[0], 0);
     if (matrix_len(file_list) > 1) {
         print_fake_ls(file_list);
