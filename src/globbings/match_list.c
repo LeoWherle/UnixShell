@@ -30,12 +30,12 @@ char *str_from_list(list_t *list)
     int i = 0;
     int j = 0;
 
-    if (!list || list->size == 0) {
+    if (!list || list->size == 0)
         return NULL;
-    }
     str = malloc(calc_str_list_len(list));
+    ASSERT_MALLOC(str, NULL);
     while (list->size > 0) {
-        tmp = list->interface->popf(list);
+        tmp = node_popf(list);
         if (!tmp)
             continue;
         for (j = 0; tmp[j] != '\0'; j++, i++)
@@ -66,34 +66,34 @@ void insert_list_in_tab(char ***tab, list_t *list, int i)
     int size = 0;
     int lsize = list->size;
     char **tmp = *tab;
+    int j = 0;
 
     for (; tmp[size]; size++);
     tmp = malloc(sizeof(char *) * (size + lsize + 1));
-    for (int j = 0; j < i; j++) {
+    ASSERT_MALLOC(tmp,);
+    for (j = 0; j < i; j++)
         tmp[j] = (*tab)[j];
-    }
-    for (int j = 0; j < lsize; j++) {
-        tmp[i + j] = list->interface->popf(list);
-    }
-    for (int j = i; tab[j + 1]; j++) {
+    for (j = 0; j < lsize; j++)
+        tmp[i + j] = node_popf(list);
+    for (j = i; tab[j + 1]; j++)
         tmp[j + lsize] = (*tab)[j + 1];
-    }
     tmp[size + lsize - 1] = NULL;
+    free((*tab)[i]);
+    free(*tab);
     *tab = tmp;
 }
 
 char **list_to_tab(list_t *list)
 {
     char **tab = NULL;
-    node_t *node = list->head;
     int i = 0;
 
     tab = malloc(sizeof(char *) * (list->size + 1));
-    while (node) {
-        tab[i] = strdup(node->data);
-        node = node->next;
-        i++;
+    ASSERT_MALLOC(tab, NULL);
+    while (list->size > 0) {
+        tab[i++] = node_popf(list);
     }
     tab[i] = NULL;
+    list_destroy(list, &free_str);
     return tab;
 }

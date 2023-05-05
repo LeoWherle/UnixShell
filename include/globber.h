@@ -24,6 +24,9 @@
     list_t *get_concerned(const char *pattern, const char *prefix,
         void (*assert)(list_t *, const char *, const char *, const char *));
 
+    void sort_matches(node_t *head);
+    void move_dirs_to_end(list_t *matches);
+
     char *str_from_list(list_t *list);
     void add_prefix_to_list(list_t *list, const char *prefix);
     void insert_list_in_tab(char ***tab, list_t *list, int i);
@@ -32,6 +35,7 @@
     char **parse_pattern(const char *pattern);
     void add_prefix_to_str(char **str, const char *prefix);
     int is_valid_pattern(const char *pattern);
+    void free_str(void *str);
 
     int is_match(const char *pattern, const char *str);
 

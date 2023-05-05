@@ -7,17 +7,6 @@
 
 #include "globber.h"
 
-static int is_in_range(char start, char end, char c)
-{
-    if (start > end) {
-        return (end <= c && c <= start);
-    } else if (start == end) {
-        return (c == start);
-    } else {
-        return (start <= c && c <= end);
-    }
-}
-
 static int is_in_array(const char *array, char c)
 {
     for (; *array != ']'; array++) {
@@ -37,7 +26,8 @@ static int handle_sqbracket_internal(const char *pattern, const char *str)
         return 0;
     }
     if (pattern[1] == '-') {
-        if (is_in_range(pattern[0], pattern[2], *str)) {
+        if ((*str <= pattern[0] && *str >= pattern[2]) ||
+            (*str >= pattern[0] && *str <= pattern[2])) {
             return 1;
         }
         return 0;
