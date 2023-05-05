@@ -42,7 +42,6 @@ char *str_from_list(list_t *list)
         free(tmp);
     }
     str[--i] = '\0';
-    list_destroy(list, &free_str);
     return str;
 }
 
