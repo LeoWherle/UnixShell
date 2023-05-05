@@ -247,3 +247,12 @@ TESTS=
   echo 'ls'
   echo 'echo $?'
 [926-END]
+
+[927]
+NAME="triple * test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'cat */*/*'
+[927-END]
