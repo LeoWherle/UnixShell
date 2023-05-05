@@ -26,12 +26,12 @@ bool check_qm(char *line)
     return true;
 }
 
-int check_env_case(env_t *env, char *arg)
+int check_env_case(char *arg, env_t *env_list)
 {
     env_t *env = NULL;
 
     if (arg[0] == '$') {
-        env = get_env(arg + 1);
+        env = find_env(env_list, arg + 1);
         if (!env->line) {
             printf("%s: Undefined variable.\n", arg + 1);
             return 1;
@@ -44,13 +44,12 @@ int check_env_case(env_t *env, char *arg)
     return 0;
 }
 
-int check_args(ast_t *node)
+int check_args(ast_t *node, head_t *head)
 {
     char **args = node->data;
-    env_t *env = NULL;
 
     for (int i = 0; args[i]; i++) {
-        if (check_env_case(env, args[i]))
+        if (check_env_case(args[i], head->first))
             return 1;
     }
     return 0;
