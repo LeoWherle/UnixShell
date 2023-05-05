@@ -15,22 +15,34 @@
 #include "clist.h"
 #include "mysh.h"
 
-history_t *history_create(char *command)
+char *get_time(time_t *rawtime)
 {
-    static int nb = 0;
-    history_t *new = NULL;
-    time_t rawtime = {0};
     struct tm *timeinfo = NULL;
     char *date = NULL;
+    int dec = 11;
+    int size = 5;
 
+    timeinfo = localtime(rawtime);
+    date = asctime(timeinfo);
+    if (date[dec] == '0') {
+        dec++;
+        size--;
+    }
+    return strndup(&date[dec], size);
+}
+
+history_t *history_create(char *command)
+{
+    static int nb = 1;
+    history_t *new = NULL;
+    time_t rawtime = {0};
+
+    time(&rawtime);
     new = malloc(sizeof(history_t));
     ASSERT_MALLOC(new, NULL);
     new->command = strdup(command);
     ASSERT_MALLOC(new->command, NULL);
-    time(&rawtime);
-    timeinfo = localtime(&rawtime);
-    date = asctime(timeinfo);
-    new->time = strndup(&date[10], 6);
+    new->time = get_time(&rawtime);
     ASSERT_MALLOC(new->time, NULL);
     new->horodate = rawtime;
     new->nb = nb;

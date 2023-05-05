@@ -62,7 +62,7 @@ static void sort_alias(alias_t **alias_list)
     }
 }
 
-static int print_alias(char **command, head_t *head, int *ret)
+static int print_alias(char **command, head_t *head)
 {
     alias_t *data = NULL;
     alias_t **alias_list = NULL;
@@ -77,7 +77,7 @@ static int print_alias(char **command, head_t *head, int *ret)
         }
         free(alias_list);
     } else {
-        *ret = print_specific_alias(command, head);
+        return print_specific_alias(command, head);
     }
     return 0;
 }
@@ -94,18 +94,18 @@ static int print_alias(char **command, head_t *head, int *ret)
  * @param ret
  * @return int
  */
-int alias_builtin(char **command, head_t *head, int *ret)
+int alias_builtin(char **command, head_t *head)
 {
     int len = matrix_len(command);
 
     if (len >= 3) {
         if (strcmp(command[1], "alias") == 0) {
             printf("alias: Too dangerous to alias that.\n");
-            return *ret = 1;
+            return 1;
         }
         if (change_alias(command, head) == 84)
             return 84;
-        return *ret = 0;
+        return 0;
     }
-    return *ret = print_alias(command, head, ret);
+    return print_alias(command, head);
 }

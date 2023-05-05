@@ -64,7 +64,7 @@ static void activate_flag(head_t *head, char flag[2])
     write(1, "\n", 1);
 }
 
-int change_dir(char **command_line, head_t *head, int *ret)
+int change_dir(char **command_line, head_t *head)
 {
     int i = 1;
     int r = 0;
@@ -76,6 +76,5 @@ int change_dir(char **command_line, head_t *head, int *ret)
     if (r == 0 && (flag[0] || flag[1])) {
         activate_flag(head, flag);
     }
-    (*ret) = r;
     return r;
 }

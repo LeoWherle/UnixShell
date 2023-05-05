@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 #include "mysh.h"
 
-static int solve_this_shit(char *shit, head_t *head, int *r)
+static int handle_error(char *shit, head_t *head, int *r)
 {
     int i = 0;
 
@@ -36,26 +36,27 @@ static int solve_this_shit(char *shit, head_t *head, int *r)
     return 0;
 }
 
-int my_exit(char **command_line, head_t *head, int *r)
+int my_exit(char **command_line, head_t *head)
 {
     int len = 0;
+    int r = 0;
 
     len = matrix_len(command_line);
     if (len == 1) {
         head->keep = false;
-        *r = head->lr;
+        return head->lr;
     }
     if (len == 2)
-        solve_this_shit(command_line[1], head, r);
+        handle_error(command_line[1], head, &r);
     if (len > 2) {
-        if (solve_this_shit(command_line[1], head, r) == 0)
+        if (handle_error(command_line[1], head, &r) == 0)
             write(2, "exit: Expression Syntax.\n", 25);
-        *r = 1;
+        return 1;
     }
-    return *r;
+    return r;
 }
 
-int my_env(char **command_line, head_t *head, int *ret)
+int my_env(char **command_line, head_t *head)
 {
     struct stat extract = {0};
     if (matrix_len(command_line) == 1) {
@@ -63,19 +64,19 @@ int my_env(char **command_line, head_t *head, int *ret)
             write(1, env->line, my_strlen(env->line));
             write(1, "\n", 1);
         }
-        return *ret = 0;
+        return 0;
     } else {
         write(2, "env : '", 7);
         write(2, command_line[1], my_strlen(command_line[1]));
         if (lstat(command_line[1], &extract) == -1) {
             write(2, "': No such file or directory\n", 29);
-            return *ret = 127;
+            return 127;
         } if (S_ISREG(extract.st_mode)) {
             write(2, "': No such file or directory\n", 29);
-            return *ret = 127;
+            return 127;
         }
         write(2, "' Permission denied\n", 20);
-        return *ret = 126;
+        return 126;
     }
 }
 
@@ -97,7 +98,7 @@ static int print_echo(char *text, char **command_line, int i)
     return 0;
 }
 
-int my_echo(char **command_line, UNUSED head_t *head, int *ret)
+int my_echo(char **command_line, UNUSED head_t *head)
 {
     char *text = NULL;
     int i = 1;
@@ -114,5 +115,5 @@ int my_echo(char **command_line, UNUSED head_t *head, int *ret)
     }
     if (line_break == 1)
         write(1, "\n", 1);
-    return *ret = 0;
+    return 0;
 }

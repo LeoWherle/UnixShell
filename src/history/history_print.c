@@ -21,7 +21,7 @@ void print_flag(history_t *line, h_flag_t *flag)
     if (flag->simple && flag->horodates)
         printf("#+%ld\n", line->horodate);
     if (!flag->simple)
-        printf("    %d  %s   %s\n", line->nb, line->time, line->command);
+        printf("% 6d\t%s\t%s\n", line->nb, line->time, line->command);
     else
         printf("%s\n", line->command);
 }
