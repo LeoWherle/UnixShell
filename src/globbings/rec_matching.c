@@ -6,6 +6,7 @@
 */
 
 #include <stddef.h>
+#include <stdlib.h>
 #include "globber.h"
 
 static void rec_match_find(char **elems, list_t *res, int depth)
