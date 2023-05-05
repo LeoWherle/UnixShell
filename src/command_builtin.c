@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include "mysh.h"
+#include "history.h"
 
 static const builtin_cmd_t builtin_commands[] = {
     {"cd", &change_dir},
@@ -16,6 +17,7 @@ static const builtin_cmd_t builtin_commands[] = {
     {"env", &my_env},
     {"alias", &alias_builtin},
     {"echo", &my_echo},
+    {"history", &my_history},
 };
 
 bool exec_special_case(char **command_line, head_t *head, int *r)
@@ -24,7 +26,7 @@ bool exec_special_case(char **command_line, head_t *head, int *r)
 
     for (int it = 0; it < cmd_amount; it++) {
         if (my_strcmp(command_line[0], builtin_commands[it].name) == 0) {
-            *r = builtin_commands[it].func(command_line, head, r);
+            *r = builtin_commands[it].func(command_line, head);
             return true;
         }
     }

@@ -5,26 +5,31 @@
 ** sep handler
 */
 
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include "ast.h"
 #include "mysh.h"
 
-int execute(ast_t *node, int to_read, int to_write, head_t *head)
+int execute(ast_t *n, int to_read, int to_write, head_t *head)
 {
     int (*ptr)(ast_t *, int, int, head_t *) = NULL;
     int r = 0;
 
-    if (!node || !node->data)
-        return 0;
-    if (node->type == SEP) {
-        ptr = node->data;
-        r = ptr(node, to_read, to_write, head);
+    if (!n || !n->data) return 0;
+    if (n->type == SEP) {
+        ptr = n->data;
+        r = ptr(n, to_read, to_write, head);
     } else {
         dup2(to_read, 0);
         dup2(to_write, 1);
-        r = use_command(node->data, head);
+        if (globbings_change_command(((char ***) &(n->data))) == 1) {
+            write(2, ((char **)n->data)[0], my_strlen(((char **)n->data)[0]));
+            write(2, ": No match.\n", 12);
+            return 1;
+        }
+        r = use_command(n->data, head);
         close(to_read);
         close(to_write);
     }
@@ -76,6 +81,7 @@ int use_pipe(ast_t *node, int to_read, int to_write, head_t *head)
     int pfd[2] = {0};
     int pid = 0;
     int r = 0;
+    int state = 0;
 
     pipe(pfd);
     pid = fork();
@@ -86,6 +92,7 @@ int use_pipe(ast_t *node, int to_read, int to_write, head_t *head)
     } else {
         close(pfd[1]);
         r = execute(node->right, pfd[0], to_write, head);
+        waitpid(pid, &state, 0);
         return r;
     }
 }

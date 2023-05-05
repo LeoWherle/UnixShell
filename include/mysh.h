@@ -37,7 +37,7 @@
 
     typedef struct builtin_cmd {
         char *name;
-        int (*func)(char **, head_t *, int *return_value);
+        int (*func)(char **, head_t *);
     } builtin_cmd_t;
 
     typedef struct head {
@@ -66,7 +66,7 @@
     char **restore_path(void);
     char **find_path(env_t *);
     env_t *find_env(env_t *, char *);
-    int my_env(char **, head_t *, int *);
+    int my_env(char **, head_t *);
 
     /*command_gestion*/
     void create_rc_file(head_t *);
@@ -74,23 +74,26 @@
     int path_command(char **, head_t *);
     bool exec_special_case(char **, head_t *, int *);
     char *change_command(char *, head_t *);
+    int globbings_change_command(char ***);
 
     /*special_command*/
-    int change_dir(char **, head_t *, int *ret);
+    int change_dir(char **, head_t *);
     int find_cd_type(char **, head_t *, int);
-    int my_setenv(char **, head_t *, int *ret);
-    int my_unsetenv(char **, head_t *, int *ret);
-    int my_exit(char **, head_t *, int *ret);
+    int my_setenv(char **, head_t *);
+    int my_unsetenv(char **, head_t *);
+    int my_exit(char **, head_t *);
     int new_pwd(env_t *, head_t *);
-    int alias_builtin(char **, head_t *, int *ret);
+    int alias_builtin(char **, head_t *);
     int change_alias(char **command, head_t *head);
-    int my_echo(char **command_line, head_t *head, int *ret);
+    int my_echo(char **command_line, head_t *head);
 
     int separator_handler(char *command_line, head_t *head);
 
-    /*pretty print*/
-    void print_shell(void);
 
     /*free functions*/
     void free_alias(void *);
+    bool create_head(head_t *head, char * const *e);
+    void free_head(head_t *head);
+    void list_end(void);
+
 #endif /*MYSH_H*/

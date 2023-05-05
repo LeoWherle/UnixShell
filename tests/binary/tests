@@ -188,6 +188,15 @@ TESTS=
   echo 'echo -n wow26 | cat -e'
 [919-END]
 
+[920]
+NAME="multiple echo option -n"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo -n arbre wow test chaise wow2'
+  echo 'echo -n wow2 test chaise 22 | cat -e'
+[920-END]
+
 [921]
 NAME="empty command"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -202,15 +211,16 @@ NAME="basic * test"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'cat * | grep Test'
+  echo 'cd test_folder'
+  echo 'cat *'
 [922-END]
 
 [923]
-NAME="my* test"
+NAME="*test"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo 'cat my*'
+  echo 'find test*'
 [923-END]
 
 [924]

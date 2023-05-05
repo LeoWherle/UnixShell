@@ -13,8 +13,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include "mysh.h"
-
-extern char **environ;
+#include "prompt.h"
+#include "rcfile.h"
 
 char **find_path(env_t *env)
 {
@@ -52,24 +52,18 @@ void remove_line_break(char *src)
 static int loop(int state, head_t *head)
 {
     char *read = NULL;
-    size_t x = 0;
-    int r = 0;
 
     if (state)
         print_shell();
-    while (head->keep && getline(&read, &x, stdin) != EOF) {
+    while (head->keep && read_line(&read) != EOF) {
         remove_line_break(read);
         if (read[0] != '\0')
-            r = separator_handler(read, head);
+            head->lr = separator_handler(read, head);
         if (state && head->keep)
             print_shell();
-        read = NULL;
     }
     free(read);
-    free_env(head->first);
-    free(head->home);
-    list_destroy(head->alias, free_alias);
-    return r;
+    return head->lr;
 }
 
 int main(int ac, char const**, char * const *e)
@@ -77,20 +71,15 @@ int main(int ac, char const**, char * const *e)
     head_t head = {0};
     int state = 0;
     int r = 0;
+
     if (ac != 1 || !e[0])
         return 84;
-    create_rc_file(&head);
-    if (!head.alias)
-        return 84;
     state = isatty(0);
-    make_env(e, &head);
-    if (!head.first)
+    if (!create_head(&head, e))
         return 84;
-    head.path = find_path(head.first);
     r = loop(state, &head);
-    free(head.old);
-    if (head.path)
-        free_matrix(head.path);
+    free_head(&head);
+    list_end();
     if (state)
         write(1, "exit\n", 5);
     return r;
