@@ -81,6 +81,7 @@ int main(int ac, char const**, char * const *e)
         return 84;
     r = loop(state, &head);
     free_head(&head);
+    list_end();
     if (state)
         write(1, "exit\n", 5);
     return r;
