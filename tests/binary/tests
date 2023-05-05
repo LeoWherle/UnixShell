@@ -254,5 +254,5 @@ SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
   echo 'cd ..'
-  echo 'cat */*/*'
+  echo 'find */*/*'
 [927-END]
