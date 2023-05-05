@@ -51,7 +51,7 @@ void add_prefix_to_str(char **str, const char *prefix)
         return;
     }
     tmp = *str;
-    *str = malloc(strlen(prefix) + strlen(tmp) + 1);
+    *str = malloc(strlen(prefix) + strlen(tmp) + 2);
     ASSERT_MALLOC(*str,);
     strcpy(*str, prefix);
     strcat(*str, "/");
