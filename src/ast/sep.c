@@ -15,8 +15,8 @@ int execute(ast_t *n, int to_read, int to_write, head_t *head)
 {
     int (*ptr)(ast_t *, int, int, head_t *) = NULL;
     int r = 0;
-    if (!n || !n->data)
-        return 0;
+
+    if (!n || !n->data) return 0;
     if (n->type == SEP) {
         ptr = n->data;
         r = ptr(n, to_read, to_write, head);
