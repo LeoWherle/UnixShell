@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "prompt.h"
+#include "mystr.h"
+#include "errorh.h"
 
 // ANSI escape sequences
 static const escchartype_t escapechars[] = {
@@ -18,7 +20,7 @@ static const escchartype_t escapechars[] = {
     {'3', delete_key},
 };
 
-int esc_key(textfield_t *field)
+int esc_key(textfield_t *field, head_t *head)
 {
     char seq[3];
 
@@ -30,7 +32,7 @@ int esc_key(textfield_t *field)
     }
     for (unsigned int i = 0; i < TAB_SIZE(escapechars); i++) {
         if (seq[0] == escapechars[i].type) {
-            return escapechars[i].handler(field, seq);
+            return escapechars[i].handler(field, seq, head);
         }
     }
     return 0;

@@ -55,7 +55,7 @@ static int loop(int state, head_t *head)
 
     if (state)
         print_shell();
-    while (head->keep && read_line(&read) != EOF) {
+    while (head->keep && read_line(&read, head) != EOF) {
         remove_line_break(read);
         if (read[0] != '\0')
             head->lr = separator_handler(read, head);
