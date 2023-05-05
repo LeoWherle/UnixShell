@@ -36,6 +36,7 @@
     char **parse_pattern(const char *pattern);
     void add_prefix_to_str(char **str, const char *prefix);
     int is_valid_pattern(const char *pattern);
+    void free_str(void *str);
 
     int is_match(const char *pattern, const char *str);
 

@@ -42,16 +42,16 @@ void move_dirs_to_end(list_t *matches)
 {
     struct stat sbuf;
     node_t *cur = NULL;
-    list_t *tmp = NULL;
 
     if (!matches) {
         return;
     }
-    tmp = list_init();
     for (cur = matches->head; cur; cur = cur->next) {
-        if (stat(cur->data, &sbuf) == 0 && S_ISDIR(sbuf.st_mode)) {
-            tmp->interface->append(
-                matches, matches->interface->pop(matches, cur));
+        if (stat(cur->data, &sbuf) != 0 || !S_ISDIR(sbuf.st_mode)) {
+            continue;
+        }
+        if (node_append(matches, node_pop(matches, cur))) {
+            return;
         }
     }
 }

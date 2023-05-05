@@ -10,6 +10,19 @@
 #include "globber.h"
 #include "clist.h"
 
+static void ppattern_step(const char *pattern, int i, int *k, list_t *list)
+{
+    char *tmp = NULL;
+
+    if (pattern[i] == '/' && (i != 0 && pattern[i - 1] != '\\')) {
+        tmp = strndup(pattern + *k, i - *k);
+        *k = i + 1;
+        if (node_append(list, tmp)) {
+            free(tmp);
+        }
+    }
+}
+
 char **parse_pattern(const char *pattern)
 {
     list_t *list = NULL;
@@ -19,15 +32,13 @@ char **parse_pattern(const char *pattern)
 
     list = list_init();
     while (pattern[i] != '\0') {
-        if (pattern[i] == '/' && (i != 0 && pattern[i - 1] != '\\')) {
-            tmp = strndup(pattern + k, i - k);
-            k = i + 1;
-            list->interface->append(list, tmp);
-        }
+        ppattern_step(pattern, i, &k, list);
         i++;
     }
     tmp = strndup(pattern + k, i);
-    list->interface->append(list, tmp);
+    if (node_append(list, tmp)) {
+        free(tmp);
+    }
     return list_to_tab(list);
 }
 
@@ -40,6 +51,7 @@ void add_prefix_to_str(char **str, const char *prefix)
     }
     tmp = *str;
     *str = malloc(strlen(prefix) + strlen(tmp) + 1);
+    ASSERT_MALLOC(*str,);
     strcpy(*str, prefix);
     strcat(*str, "/");
     strcat(*str, tmp);
@@ -60,4 +72,11 @@ int is_valid_pattern(const char *pattern)
         i++;
     }
     return 0;
+}
+
+void free_str(void *str)
+{
+    if (str) {
+        free(str);
+    }
 }

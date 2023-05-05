@@ -18,8 +18,14 @@
 void any_concerned(list_t *list, const char *pattern,
     UNUSED const char *prefix, const char *entryn)
 {
-    if (is_match(pattern, entryn)) {
-        list->interface->append(list, strdup(entryn));
+    char *tmp = NULL;
+
+    if (!is_match(pattern, entryn)) {
+        return;
+    }
+    tmp = strdup(entryn);
+    if (node_append(list, tmp)) {
+        free(tmp);
     }
 }
 
@@ -31,9 +37,17 @@ void dir_concerned(
 
     tmp = strdup(entryn);
     add_prefix_to_str(&tmp, prefix);
-    stat(tmp, &statbuf);
-    if (is_match(pattern, entryn) && S_ISDIR(statbuf.st_mode)) {
-        list->interface->append(list, strdup(entryn));
+    if (stat(tmp, &statbuf) == -1) {
+        free(tmp);
+        return;
+    }
+    free(tmp);
+    if (!is_match(pattern, entryn) || !S_ISDIR(statbuf.st_mode)) {
+        return;
+    }
+    tmp = strdup(entryn);
+    if (node_append(list, tmp)) {
+        free(tmp);
     }
 }
 
