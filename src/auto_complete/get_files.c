@@ -91,12 +91,12 @@ char *get_command(char *field)
 void get_corresponding_files(char **file_list, char *field)
 {
     char *tmp = NULL;
-    int i = 0;
-    int k = 0;
+    int i = 0; int k = 0;
 
     for (i = 0; file_list[i]; i++) {
         tmp = strdup(file_list[i]);
         if (strncmp(tmp, field, strlen(field)) == 0) {
+            free(file_list[k]);
             file_list[k] = strdup(file_list[i]);
             k++;
         }

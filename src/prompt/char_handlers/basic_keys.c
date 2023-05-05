@@ -61,9 +61,9 @@ int tab_key(textfield_t *field)
     } else
         tmp = file_list[0];
     memmove(command, tmp, strlen(tmp));
-    field->bf_size = strlen(field->buffer) + strlen(tmp) -
-        strlen(command);
+    field->bf_size = strlen(field->buffer) + strlen(tmp) - strlen(command);
     field->cursor_pos = field->bf_size;
+    if (tmp != file_list[0]) free(tmp);
     free_matrix(file_list);
     return 0;
 }
