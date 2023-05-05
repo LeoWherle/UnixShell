@@ -17,5 +17,6 @@
     void get_corresponding_files(char **file_list, char *field);
     bool is_in(char c, char *str);
     int get_file_nb(char *path);
+    char *get_best_match(char **file_list);
 
 #endif /* AUTO_COMPLETE_H */

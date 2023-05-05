@@ -63,7 +63,7 @@ void print_fake_ls(char **file_list)
 
     write(1, "\n", 1);
     write(1, file_list[0], strlen(file_list[0]));
-    write(1, "*", 2);
+    write(1, "*", 1);
     while (file_list[i]) {
         write(1, "\t", 1);
         write(1, file_list[i], strlen(file_list[i]));

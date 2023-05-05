@@ -20,6 +20,25 @@ bool is_in(char c, char *str)
     return (false);
 }
 
+char *get_best_match(char **file_list)
+{
+    int i = 1;
+    int k = 0;
+    int old_k = 0;
+    char *best_match = NULL;
+
+    for (; file_list[i]; i++) {
+        for (k = 0; strncmp(file_list[0], file_list[i], k) == 0; k++);
+        if (i == 1)
+            old_k = k;
+        if (k < old_k)
+            old_k = k;
+    }
+    old_k--;
+    best_match = strndup(file_list[0], old_k);
+    return (best_match);
+}
+
 static void bubble_sort_files(char **file_list, int i, int j)
 {
     char *tmp = NULL;

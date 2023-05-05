@@ -48,19 +48,22 @@ int tab_key(textfield_t *field)
 {
     char **file_list = NULL;
     char *command = NULL;
+    char *tmp = NULL;
 
     file_list = init_file_list(file_list, field);
     ASSERT_PTR(file_list, 0);
     command = get_command(field->buffer);
     get_corresponding_files(file_list, command);
     ASSERT_PTR(file_list[0], 0);
-    if (matrix_len(file_list) == 1 && file_list[0] != NULL) {
-        memmove(command, file_list[0], strlen(file_list[0]));
-        field->bf_size = strlen(field->buffer) + strlen(file_list[0]) -
-            strlen(command);
-        field->cursor_pos = field->bf_size;
-    } else
+    if (matrix_len(file_list) > 1) {
         print_fake_ls(file_list);
+        tmp = get_best_match(file_list);
+    } else
+        tmp = file_list[0];
+    memmove(command, tmp, strlen(tmp));
+    field->bf_size = strlen(field->buffer) + strlen(tmp) -
+        strlen(command);
+    field->cursor_pos = field->bf_size;
     free_matrix(file_list);
     return 0;
 }
