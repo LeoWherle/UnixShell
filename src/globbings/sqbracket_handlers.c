@@ -26,7 +26,8 @@ static int handle_sqbracket_internal(const char *pattern, const char *str)
         return 0;
     }
     if (pattern[1] == '-') {
-        if (IS_INRANGE(pattern[0], pattern[2], *str)) {
+        if ((*str <= pattern[0] && *str >= pattern[2]) ||
+            (*str >= pattern[0] && *str <= pattern[2])) {
             return 1;
         }
         return 0;
