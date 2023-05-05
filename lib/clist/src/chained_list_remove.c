@@ -18,6 +18,7 @@
 void *node_popf(list_t *list)
 {
     node_t *node = NULL;
+    void *data = NULL;
 
     ASSERT_MALLOC(list->head, NULL)
     node = list->head;
@@ -27,7 +28,9 @@ void *node_popf(list_t *list)
     else
         list->tail = NULL;
     list->size--;
-    return node->data;
+    data = node->data;
+    free(node);
+    return data;
 }
 
 /**
