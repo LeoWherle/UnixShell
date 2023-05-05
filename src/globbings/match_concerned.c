@@ -24,6 +24,7 @@ void any_concerned(list_t *list, const char *pattern,
         return;
     }
     tmp = strdup(entryn);
+    ASSERT_PTR(tmp,);
     if (node_append(list, tmp)) {
         free(tmp);
     }
@@ -33,9 +34,10 @@ void dir_concerned(
     list_t *list, const char *pattern, const char *prefix, const char *entryn)
 {
     struct stat statbuf;
-    char *tmp = strdup(entryn);
+    char *tmp = NULL;
 
     tmp = strdup(entryn);
+    ASSERT_PTR(tmp,);
     add_prefix_to_str(&tmp, prefix);
     if (stat(tmp, &statbuf) == -1) {
         free(tmp);
@@ -46,6 +48,7 @@ void dir_concerned(
         return;
     }
     tmp = strdup(entryn);
+    ASSERT_PTR(tmp,);
     if (node_append(list, tmp)) {
         free(tmp);
     }

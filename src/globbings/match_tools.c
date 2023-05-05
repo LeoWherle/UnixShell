@@ -36,6 +36,7 @@ char **parse_pattern(const char *pattern)
         i++;
     }
     tmp = strndup(pattern + k, i);
+    ASSERT_PTR(tmp, NULL);
     if (node_append(list, tmp)) {
         free(tmp);
     }

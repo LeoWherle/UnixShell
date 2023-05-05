@@ -71,16 +71,15 @@ void insert_list_in_tab(char ***tab, list_t *list, int i)
     for (; tmp[size]; size++);
     tmp = malloc(sizeof(char *) * (size + lsize + 1));
     ASSERT_MALLOC(tmp,);
-    for (j = 0; j < i; j++) {
+    for (j = 0; j < i; j++)
         tmp[j] = (*tab)[j];
-    }
-    for (j = 0; j < lsize; j++) {
+    for (j = 0; j < lsize; j++)
         tmp[i + j] = node_popf(list);
-    }
-    for (j = i; tab[j + 1]; j++) {
+    for (j = i; tab[j + 1]; j++)
         tmp[j + lsize] = (*tab)[j + 1];
-    }
     tmp[size + lsize - 1] = NULL;
+    free((*tab)[i]);
+    free(*tab);
     *tab = tmp;
 }
 
