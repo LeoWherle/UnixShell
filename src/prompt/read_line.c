@@ -67,7 +67,7 @@ int read_line(char **output)
     int ret = 0;
 
     size_t size = 0;
-
+    memset(field.buffer, 0, sizeof(field.buffer));
     if (!isatty(STDIN_FILENO)) {
         return getline(output, &size, stdin);
     } else {

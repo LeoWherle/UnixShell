@@ -14,7 +14,7 @@
     char **get_file_list(char **file_list, char *path);
     void sort_files(char **file_list);
     char *get_command(char *field);
-    void get_corresponding_files(char **file_list, char *field);
+    char **get_corresponding_files(char **file_list, char *field);
     bool is_in(char c, char *str);
     int get_file_nb(char *path);
     char *get_best_match(char **file_list);
