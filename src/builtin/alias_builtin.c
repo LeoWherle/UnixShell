@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "fcntl.h"
 #include "rcfile.h"
 #include "mysh.h"
@@ -31,12 +32,22 @@ static int print_specific_alias(char **command, head_t *head)
 static void sort_conditon(alias_t **alias_list, int i, int j)
 {
     alias_t *tmp = NULL;
+    char *tmp_alias_i = NULL;
+    char *tmp_alias_j = NULL;
 
-    if (strcmp(alias_list[i]->alias, alias_list[j]->alias) > 0) {
+    tmp_alias_i = strdup(alias_list[i]->alias);
+    tmp_alias_j = strdup(alias_list[j]->alias);
+    for (int k = 0; tmp_alias_i[k]; k++)
+        tmp_alias_i[k] = tolower(tmp_alias_i[k]);
+    for (int k = 0; tmp_alias_j[k]; k++)
+        tmp_alias_j[k] = tolower(tmp_alias_j[k]);
+    if (strcmp(tmp_alias_i, tmp_alias_j) > 0) {
         tmp = alias_list[i];
         alias_list[i] = alias_list[j];
         alias_list[j] = tmp;
     }
+    free(tmp_alias_i);
+    free(tmp_alias_j);
 }
 
 static void sort_alias(alias_t **alias_list)
