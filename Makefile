@@ -59,7 +59,9 @@ SRC = 	src/minishell.c	\
 		src/globbings/match_maker.c	\
 		src/globbings/rec_matching.c	\
 		src/globbings/match.c	\
-		src/globbings/sqbracket_handlers.c
+		src/globbings/sqbracket_handlers.c \
+		src/auto_complete/get_files.c \
+		src/auto_complete/sort_files.c \
 
 
 TEST_CRIT	=	tests/src/match_tests.c

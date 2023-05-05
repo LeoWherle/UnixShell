@@ -8,8 +8,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "errorh.h"
 #include "prompt.h"
+#include "mystr.h"
+#include "auto_complete.h"
 
 int enter_key(UNUSED textfield_t *field)
 {
@@ -19,8 +22,46 @@ int enter_key(UNUSED textfield_t *field)
     return 1;
 }
 
-int tab_key(UNUSED textfield_t *field)
+static char **init_file_list(char **file_list, textfield_t *field)
 {
+    int nb = 0;
+
+    nb = get_file_nb("./");
+    if (nb == -1)
+        return NULL;
+    if (!is_in(' ', field->buffer) && field->cursor_pos != 0)
+        nb += get_file_nb("/usr/bin/");
+    file_list = malloc(sizeof(char *) * (nb + 1));
+    ASSERT_MALLOC(file_list, NULL);
+    file_list[0] = NULL;
+    file_list = get_file_list(file_list, "./");
+    ASSERT_MALLOC(file_list, NULL);
+    if (!is_in(' ', field->buffer) && field->cursor_pos != 0) {
+        file_list = get_file_list(file_list, "/usr/bin/");
+        ASSERT_MALLOC(file_list, NULL);
+    }
+    sort_files(file_list);
+    return file_list;
+}
+
+int tab_key(textfield_t *field)
+{
+    char **file_list = NULL;
+    char *command = NULL;
+
+    file_list = init_file_list(file_list, field);
+    ASSERT_PTR(file_list, 0);
+    command = get_command(field->buffer);
+    get_corresponding_files(file_list, command);
+    ASSERT_PTR(file_list[0], 0);
+    if (matrix_len(file_list) == 1 && file_list[0] != NULL) {
+        memmove(command, file_list[0], strlen(file_list[0]));
+        field->bf_size = strlen(field->buffer) + strlen(file_list[0]) -
+            strlen(command);
+        field->cursor_pos = field->bf_size;
+    } else
+        print_fake_ls(file_list);
+    free_matrix(file_list);
     return 0;
 }
 
