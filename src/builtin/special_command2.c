@@ -12,7 +12,7 @@
 #include <sys/stat.h>
 #include "mysh.h"
 
-static int solve_this_shit(char *shit, head_t *head, int *r)
+static int handle_error(char *shit, head_t *head, int *r)
 {
     int i = 0;
 
@@ -36,23 +36,24 @@ static int solve_this_shit(char *shit, head_t *head, int *r)
     return 0;
 }
 
-int my_exit(char **command_line, head_t *head, int *r)
+int my_exit(char **command_line, head_t *head)
 {
     int len = 0;
+    int r = 0;
 
     len = matrix_len(command_line);
     if (len == 1) {
         head->keep = false;
-        *r = head->lr;
+        return head->lr;
     }
     if (len == 2)
-        solve_this_shit(command_line[1], head, r);
+        handle_error(command_line[1], head, &r);
     if (len > 2) {
-        if (solve_this_shit(command_line[1], head, r) == 0)
+        if (handle_error(command_line[1], head, &r) == 0)
             write(2, "exit: Expression Syntax.\n", 25);
-        *r = 1;
+        return 1;
     }
-    return *r;
+    return r;
 }
 
 int my_env(char **command_line, head_t *head, int *ret)
