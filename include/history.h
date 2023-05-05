@@ -30,7 +30,7 @@
     void histroy_destroy(void *ptr);
     void print_history(list_t *history, int i, h_flag_t *flag);
     char *find_com_in_history(list_t *history, char *to_find);
-    int my_history(char **command, head_t *head, UNUSED int *return_value);
+    int my_history(char **command, head_t *head);
     char *pick_history(char *command_line, head_t *head);
     void recall_error(char **d_command, int i, int j, bool *error);
 

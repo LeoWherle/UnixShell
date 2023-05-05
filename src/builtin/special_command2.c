@@ -56,7 +56,7 @@ int my_exit(char **command_line, head_t *head)
     return r;
 }
 
-int my_env(char **command_line, head_t *head, int *ret)
+int my_env(char **command_line, head_t *head)
 {
     struct stat extract = {0};
     if (matrix_len(command_line) == 1) {
@@ -64,19 +64,19 @@ int my_env(char **command_line, head_t *head, int *ret)
             write(1, env->line, my_strlen(env->line));
             write(1, "\n", 1);
         }
-        return *ret = 0;
+        return 0;
     } else {
         write(2, "env : '", 7);
         write(2, command_line[1], my_strlen(command_line[1]));
         if (lstat(command_line[1], &extract) == -1) {
             write(2, "': No such file or directory\n", 29);
-            return *ret = 127;
+            return 127;
         } if (S_ISREG(extract.st_mode)) {
             write(2, "': No such file or directory\n", 29);
-            return *ret = 127;
+            return 127;
         }
         write(2, "' Permission denied\n", 20);
-        return *ret = 126;
+        return 126;
     }
 }
 
@@ -98,7 +98,7 @@ static int print_echo(char *text, char **command_line, int i)
     return 0;
 }
 
-int my_echo(char **command_line, UNUSED head_t *head, int *ret)
+int my_echo(char **command_line, UNUSED head_t *head)
 {
     char *text = NULL;
     int i = 1;
@@ -115,5 +115,5 @@ int my_echo(char **command_line, UNUSED head_t *head, int *ret)
     }
     if (line_break == 1)
         write(1, "\n", 1);
-    return *ret = 0;
+    return 0;
 }

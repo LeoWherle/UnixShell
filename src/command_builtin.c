@@ -26,7 +26,7 @@ bool exec_special_case(char **command_line, head_t *head, int *r)
 
     for (int it = 0; it < cmd_amount; it++) {
         if (my_strcmp(command_line[0], builtin_commands[it].name) == 0) {
-            *r = builtin_commands[it].func(command_line, head, r);
+            *r = builtin_commands[it].func(command_line, head);
             return true;
         }
     }

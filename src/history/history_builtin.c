@@ -56,7 +56,7 @@ static int find_n(char **command)
     return 100;
 }
 
-int my_history(char **command, head_t *head, UNUSED int *return_value)
+int my_history(char **command, head_t *head)
 {
     int n = 0;
     h_flag_t flag = {false};
