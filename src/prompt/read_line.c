@@ -65,7 +65,7 @@ textfield_t *field, head_t *head)
 int read_line(char **output, head_t *head)
 {
     struct termios orig_termios;
-    textfield_t field = {.bf_size = 0, .cursor_pos = 0};
+    textfield_t field = {.bf_size = 0, .cursor_pos = 0, .history_pos = 0};
     int ret = 0;
 
     size_t size = 0;

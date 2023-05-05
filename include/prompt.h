@@ -16,6 +16,7 @@
     typedef struct textfield_s {
         unsigned short bf_size;
         unsigned short cursor_pos;
+        unsigned int history_pos;
         char buffer[MAX_INPUTLINE];
     } textfield_t;
 
