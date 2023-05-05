@@ -31,8 +31,10 @@ bool only_st(char *line)
 
     while ((line[i] == ' ' || line[i] == '\t') && line[i] != '\0')
         i++;
-    if (line[i] == '\0')
+    if (line[i] == '\0') {
+        free(line);
         return true;
+    }
     return false;
 }
 
@@ -53,7 +55,6 @@ int separator_handler(char *command_line, head_t *head)
 {
     ast_t *command_tree = NULL;
     int r = 0;
-
     if (!command_line) return 84;
     if (only_st(command_line)) return head->lr;
     command_line = pre_parsing(command_line, head);

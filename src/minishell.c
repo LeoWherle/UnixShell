@@ -61,8 +61,6 @@ static int loop(int state, head_t *head)
             head->lr = separator_handler(read, head);
         if (state && head->keep)
             print_shell();
-        read = NULL;
-        free(read);
     }
     free(read);
     return head->lr;
