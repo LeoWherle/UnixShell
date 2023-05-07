@@ -14,7 +14,7 @@
 #include "mystr.h"
 #include "auto_complete.h"
 
-int enter_key(UNUSED textfield_t *field)
+int enter_key(UNUSED textfield_t *field, UNUSED head_t *head)
 {
     if (isatty(STDIN_FILENO)) {
         putchar('\n');
@@ -44,7 +44,7 @@ static char **init_file_list(char **file_list, textfield_t *field)
     return file_list;
 }
 
-int tab_key(textfield_t *field)
+int tab_key(textfield_t *field, UNUSED head_t *head)
 {
     char **file_list = NULL;
     char *command = NULL; char *tmp = NULL;
@@ -68,7 +68,7 @@ int tab_key(textfield_t *field)
     return 0;
 }
 
-int backspace_key(textfield_t *field)
+int backspace_key(textfield_t *field, UNUSED head_t *head)
 {
     if (field->cursor_pos > 0) {
         memmove(field->buffer + field->cursor_pos - 1,

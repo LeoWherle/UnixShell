@@ -20,11 +20,11 @@ static const chartype_t specialchars[] = {
     {'\033', esc_key},
 };
 
-int handle_char(textfield_t *field, char c)
+int handle_char(textfield_t *field, char c, head_t *head)
 {
     for (unsigned int i = 0; i < TAB_SIZE(specialchars); i++) {
         if (c == specialchars[i].type) {
-            return specialchars[i].handler(field);
+            return specialchars[i].handler(field, head);
         }
     }
     if (field->cursor_pos < MAX_INPUTLINE - 1) {

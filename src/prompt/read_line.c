@@ -11,6 +11,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include "errorh.h"
+#include "mysh.h"
 #include "prompt.h"
 
 static void enable_raw_mode(struct termios *orig_termios)
@@ -41,13 +42,14 @@ static void print_state(textfield_t *field)
     }
 }
 
-int terminal_loop(struct termios *orig_termios, textfield_t *field)
+static int terminal_loop(struct termios *orig_termios,
+textfield_t *field, head_t *head)
 {
     char c = 0;
 
     c = getchar();
     while (c != EOF && c != '\4') {
-        if (handle_char(field, c)) {
+        if (handle_char(field, c, head)) {
             break;
         }
         print_state(field);
@@ -60,10 +62,10 @@ int terminal_loop(struct termios *orig_termios, textfield_t *field)
     return field->bf_size;
 }
 
-int read_line(char **output)
+int read_line(char **output, head_t *head)
 {
     struct termios orig_termios;
-    textfield_t field = {.bf_size = 0, .cursor_pos = 0};
+    textfield_t field = {.bf_size = 0, .cursor_pos = 0, .history_pos = 0};
     int ret = 0;
 
     size_t size = 0;
@@ -72,7 +74,7 @@ int read_line(char **output)
         return getline(output, &size, stdin);
     } else {
         enable_raw_mode(&orig_termios);
-        ret = terminal_loop(&orig_termios, &field);
+        ret = terminal_loop(&orig_termios, &field, head);
         *output = strdup(field.buffer);
     }
     return ret;
