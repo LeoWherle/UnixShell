@@ -33,5 +33,6 @@
     int my_history(char **command, head_t *head);
     char *pick_history(char *command_line, head_t *head);
     void recall_error(char **d_command, int i, int j, bool *error);
+    char *add_to_history(char *new_command, head_t *head);
 
 #endif /* HISTORY_H */

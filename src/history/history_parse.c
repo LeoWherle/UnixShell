@@ -31,7 +31,7 @@ static int remake_str(char **d_command, char *match, int i, int j)
     return 1;
 }
 
-int last_command(char **d_command, int i, list_t *history)
+static int last_command(char **d_command, int i, list_t *history)
 {
     char *new = NULL;
     history_t *line = NULL;
@@ -77,7 +77,7 @@ static int recall(char **d_command, int i, list_t *history, bool *error)
     return r;
 }
 
-char *check_recall(char **d_command, list_t *history, bool *error)
+static char *check_recall(char **d_command, list_t *history, bool *error)
 {
     char *new = NULL;
     int len = 0;
@@ -103,7 +103,6 @@ char *check_recall(char **d_command, list_t *history, bool *error)
 
 char *pick_history(char *command_line, head_t *head)
 {
-    history_t *new = NULL;
     char **d_command = NULL;
     char *new_command = NULL;
     bool error = false;
@@ -116,11 +115,5 @@ char *pick_history(char *command_line, head_t *head)
         head->lr = 1;
         return NULL;
     }
-    new = history_create(new_command);
-    if (!new || node_append(head->history, new) == 1) {
-        head->keep = false;
-        head->lr = 84;
-        return NULL;
-    }
-    return new_command;
+    return add_to_history(new_command, head);
 }

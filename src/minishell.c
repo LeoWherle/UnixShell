@@ -62,7 +62,6 @@ static int loop(int state, head_t *head)
         if (state && head->keep)
             print_shell();
     }
-    free(read);
     return head->lr;
 }
 
