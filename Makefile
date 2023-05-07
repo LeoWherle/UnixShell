@@ -54,6 +54,7 @@ SRC = 	src/minishell.c	\
 		src/history/history_print.c	\
 		src/history/history_builtin.c	\
 		src/history/history_parse.c	\
+		src/history/add_to_history.c	\
 		src/globbings/match_concerned.c	\
 		src/globbings/glob_handlers.c	\
 		src/globbings/match_tools.c	\

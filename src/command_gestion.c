@@ -50,37 +50,36 @@ static int execute_command(char *command, char **arg, head_t *head)
     return state;
 }
 
-int path_command(char **c, head_t *head)
+bool path_command(char **c, head_t *head, int *r)
 {
-    int r = 1;
     char *file_path = NULL;
 
-    if (exec_special_case(c, head, &r))
-        return r;
     for (int i = 0; head->path && head->path[i] != NULL; i++) {
         file_path = malloc(my_strlen(c[0]) + my_strlen(head->path[i]) + 2);
         my_strcpy(file_path, head->path[i]);
         my_strcat(file_path, "/");
         my_strcat(file_path, c[0]);
         if (access(file_path, X_OK) == 0) {
-            r = execute_command(file_path, c, head);
+            *r = execute_command(file_path, c, head);
             free(file_path);
-            return r;
+            return true;
         }
         free(file_path);
     }
-    write(2, c[0], my_strlen(c[0]));
-    write(2, ": Command not found.\n", 21);
-    return r;
+    return false;
 }
 
 int use_command(char **command_line, head_t *head)
 {
     struct stat extract = {0};
+    int r = 0;
 
     if (command_line[0] == NULL)
         return head->lr;
-
+    if (exec_special_case(command_line, head, &r))
+        return r;
+    if (path_command(command_line, head, &r))
+        return r;
     if (access(command_line[0], F_OK) == 0) {
         if (access(command_line[0], X_OK) == 0 &&
         lstat(command_line[0], &extract) != -1 && !S_ISDIR(extract.st_mode))
@@ -89,6 +88,7 @@ int use_command(char **command_line, head_t *head)
         write(2, ": Permission denied.\n", 21);
         return 1;
     }
-
-    return path_command(command_line, head);
+    write(2, command_line[0], my_strlen(command_line[0]));
+    write(2, ": Command not found.\n", 21);
+    return 1;
 }

@@ -8,27 +8,47 @@
 #include <stdbool.h>
 #include "ast.h"
 
-bool check_nb_par(ast_t *node)
+static bool check_close(ast_t *node, int *open, int *close)
 {
-    if (node->data == par_open) {
-        if (node->right->data != par_close) {
-            WRITE_MUCH_OPEN;
-            return false;
-        }
-    }
-    if (node->right->data == par_close && node->data != par_open) {
+    *close += 1;
+    if (*close > *open) {
         WRITE_MUCH_CLOSE;
         return false;
     }
-    if (node->data == par_open && node->left->data == NULL &&
-        node->right->right->data == NULL && node->right->left->data == NULL) {
+    if (node->right->type == COMMAND && node->right->data) {
+        WRITE_BAD_PLACE;
+        return false;
+    }
+    if (!node->left->data) {
         WRITE_NULL_S;
         return false;
     }
     return true;
 }
 
-bool check_ambiguous_redir(ast_t *node)
+bool check_par(ast_t *node, int *open, int *close)
+{
+    if (node->type == COMMAND ||
+        (node->data != par_open && node->data != par_close))
+        return true;
+    if (node->data == par_open) {
+        *open += 1;
+        if (node->left->type == COMMAND && node->left->data) {
+            WRITE_BAD_PLACE;
+            return false;
+        }
+        if (node->right->data != par_open && node->right->data != par_close) {
+            WRITE_MUCH_OPEN;
+            return false;
+        }
+    } else if (!check_close(node, open, close))
+        return false;
+    if (!check_par(node->left, open, close))
+        return false;
+    return check_par(node->right, open, close);
+}
+
+static bool check_ambiguous_redir(ast_t *node)
 {
     if (node->data == use_pipe) {
         if (node->right->data == use_din || node->right->data == use_in ||
@@ -40,7 +60,7 @@ bool check_ambiguous_redir(ast_t *node)
     return true;
 }
 
-bool check_null(ast_t *node)
+static bool check_null(ast_t *node)
 {
     if (node->right->data == NULL) {
         if (node->data == use_din || node->data == use_dout ||
@@ -64,14 +84,8 @@ bool check_null(ast_t *node)
 
 bool check_tree(ast_t *node, int i)
 {
-    if (i == 0 && node->data == par_close) {
-        WRITE_MUCH_CLOSE;
-        return false;
-    }
     if (node->type == COMMAND)
         return true;
-    if (!check_nb_par(node))
-        return false;
     if (!check_ambiguous_redir(node))
         return false;
     if (!check_null(node))
