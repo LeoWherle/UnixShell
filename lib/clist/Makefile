@@ -32,6 +32,7 @@ SRC 	=	src/chained_list_concat.c		\
 			src/chained_list_remove.c	\
 			src/chained_list_build.c	\
 			src/chained_list_dup.c	\
+			src/chained_list_end.c	\
 
 CRIT_LIST	=	../../tests/lib/clist/test_list_init.c \
 				../../tests/lib/clist/test_list_concat.c \

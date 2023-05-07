@@ -97,4 +97,8 @@
 
     list_t *list_dup(list_t *list, any_t (*dup_data)(any_t data));
 
+    // a function to free the interface DANGEROUS MUST BE USED ONLY ONCE at the
+    // end of the program
+    void list_end(void);
+
 #endif /* !CLIST_H_ */

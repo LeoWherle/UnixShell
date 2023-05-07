@@ -32,16 +32,7 @@ char **find_path(env_t *env)
     return e_path;
 }
 
-void free_matrix(char **matrix)
-{
-    if (!matrix)
-        return;
-    for (int i = 0; matrix[i] != NULL; i++)
-        free(matrix[i]);
-    free(matrix);
-}
-
-void remove_line_break(char *src)
+static void remove_line_break(char *src)
 {
     int i = 0;
 
