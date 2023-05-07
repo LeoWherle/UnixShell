@@ -108,7 +108,6 @@ char *pick_history(char *command_line, head_t *head)
     bool error = false;
 
     d_command = my_str_to_word_array(command_line, ' ');
-    free(command_line);
     new_command = check_recall(d_command, head->history, &error);
     free_matrix(d_command);
     if (error) {
