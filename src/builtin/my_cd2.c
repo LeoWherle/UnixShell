@@ -76,6 +76,7 @@ static int change_var(char *go_to, head_t *head, char misc)
 
     path = getcwd(path, 0);
     if (!go_to || chdir(go_to) == -1) {
+        free(path);
         return error_cd(go_to, head, misc);
     }
     if (head->old)
