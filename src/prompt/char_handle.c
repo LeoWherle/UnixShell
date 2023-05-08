@@ -20,13 +20,8 @@ static const chartype_t specialchars[] = {
     {'\033', esc_key},
 };
 
-int handle_char(textfield_t *field, char c, head_t *head)
+static void put_char(textfield_t *field, char c)
 {
-    for (unsigned int i = 0; i < TAB_SIZE(specialchars); i++) {
-        if (c == specialchars[i].type) {
-            return specialchars[i].handler(field, head);
-        }
-    }
     if (field->cursor_pos < MAX_INPUTLINE - 1) {
         memmove(field->buffer + field->cursor_pos + 1,
             field->buffer + field->cursor_pos,
@@ -34,6 +29,18 @@ int handle_char(textfield_t *field, char c, head_t *head)
         field->buffer[field->cursor_pos] = c;
         field->cursor_pos++;
         field->bf_size++;
+    }
+}
+
+int handle_char(textfield_t *field, char c, head_t *head)
+{
+    for (unsigned int i = 0; i < TAB_SIZE(specialchars); i++) {
+        if (c == specialchars[i].type) {
+            return specialchars[i].handler(field, head);
+        }
+    }
+    if (c >= 32 && c <= 126) {
+        put_char(field, c);
     }
     if (field->cursor_pos == MAX_INPUTLINE - 1) {
         return 1;

@@ -30,6 +30,11 @@
         int (*handler)(struct textfield_s *field, char seq[], head_t *head);
     } escchartype_t;
 
+    typedef struct escchartypetype_s {
+        char type;
+        escchartype_t const *handler;
+    } escchartypetype_t;
+
     /*pretty promt print*/
     int print_shell(void);
 
