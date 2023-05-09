@@ -13,14 +13,27 @@
 #include "clist.h"
 #include "mysh.h"
 
+void free_alias(void *void_alias)
+{
+    alias_t *alias = void_alias;
+
+    free(alias->alias);
+    free(alias->command);
+    free(alias);
+}
+
 static int parse_alias(char *line, alias_t *alias)
 {
     char **alias_split = my_str_to_word_array(line, ':');
-    int len = matrix_len(alias_split);
+    int len = 0;
     int command_len = 0;
 
-    if (len != 3)
+    ASSERT_MALLOC(alias_split, -1);
+    len = matrix_len(alias_split);
+    if (len != 3) {
+        free_matrix(alias_split);
         return 0;
+    }
     alias->alias = strdup(alias_split[1]);
     ASSERT_MALLOC(alias->alias, -1);
     command_len = strlen(alias_split[2]);
@@ -39,6 +52,8 @@ static list_t *create_alias_node(char *line, list_t *aliases)
 
     ASSERT_MALLOC(alias, NULL);
     ret = parse_alias(line, alias);
+    if (ret < 1)
+        free(alias);
     if (ret == -1)
         return NULL;
     if (ret == 0)
@@ -66,15 +81,6 @@ list_t *get_alias_list(void)
     fclose(fd);
     free(line);
     return aliases;
-}
-
-void free_alias(void *void_alias)
-{
-    alias_t *alias = void_alias;
-
-    free(alias->alias);
-    free(alias->command);
-    free(alias);
 }
 
 char *get_alias(char *command_part, list_t *aliases)
