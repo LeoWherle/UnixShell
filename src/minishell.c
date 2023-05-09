@@ -15,6 +15,9 @@
 #include "mysh.h"
 #include "prompt.h"
 #include "rcfile.h"
+#include "welcome.h"
+
+static void print_start(void);
 
 char **find_path(env_t *env)
 {
@@ -32,16 +35,7 @@ char **find_path(env_t *env)
     return e_path;
 }
 
-void free_matrix(char **matrix)
-{
-    if (!matrix)
-        return;
-    for (int i = 0; matrix[i] != NULL; i++)
-        free(matrix[i]);
-    free(matrix);
-}
-
-void remove_line_break(char *src)
+static void remove_line_break(char *src)
 {
     int i = 0;
 
@@ -53,8 +47,10 @@ static int loop(int state, head_t *head)
 {
     char *read = NULL;
 
-    if (state)
+    if (state) {
+        print_start();
         print_shell();
+    }
     while (head->keep && read_line(&read, head) != EOF) {
         remove_line_break(read);
         if (read[0] != '\0')
@@ -85,4 +81,9 @@ int main(int ac, char const**, char * const *e)
     if (state)
         write(1, "exit\n", 5);
     return r;
+}
+
+static void print_start(void)
+{
+    printf("%s", WELCOME_STR);
 }

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "clist.h"
 #include "mysh.h"
+#include "mystr.h"
 #include "rcfile.h"
 #include "history.h"
 
