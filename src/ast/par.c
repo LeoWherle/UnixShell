@@ -30,34 +30,45 @@ bool place_node(ast_t *dest, ast_t *packet)
     return place_node(dest->right, packet);
 }
 
-ast_t *pre_par_obj(ast_t *node)
+ast_t *priority(ast_t *left, ast_t *right, bool *post)
 {
-    ast_t *(*ptr)(ast_t *) = NULL;
-    ast_t *new = NULL;
-
-    new = node->left;
-    if (new->data == par_close || new->data == par_open) {
-        ptr = new->data;
-        new = ptr(new);
+    if (*post && right->order < left->order) {
+        left->right = right->left;
+        right->left = left;
+        return right;
     }
-    free_ast(new->right);
-    if (node->right->data == par_open || node->right->data == par_close) {
-        ptr = node->right->data;
-        new->right = ptr(node->right);
-    } else
-        new->right = node->right;
-    return new;
+    left->right = right;
+    return left;
 }
 
-ast_t *par_open(ast_t *node)
+ast_t *pre_par_obj(ast_t *node, bool *post)
+{
+    ast_t *(*ptr)(ast_t *, bool *) = NULL;
+    ast_t *left = NULL;
+    ast_t *right = NULL;
+    left = node->left;
+    if (left->data == par_close || left->data == par_open) {
+        ptr = left->data;
+        left = ptr(left, post);
+    }
+    free_ast(left->right);
+    if (node->right->data == par_open || node->right->data == par_close) {
+        ptr = node->right->data;
+        right = ptr(node->right, post);
+    } else
+        right = node->right;
+    return priority(left, right, post);
+}
+
+ast_t *par_open(ast_t *node, bool *post)
 {
     ast_t *new = NULL;
 
     if (node->left->data){
-        new = pre_par_obj(node);
+        new = pre_par_obj(node, post);
     } else {
         if (node->right->data == par_close || node->right->data == par_open)
-            new = par_close(node->right);
+            new = par_close(node->right, post);
         else
             new = node->right;
         free_ast(node->left);
@@ -66,19 +77,21 @@ ast_t *par_open(ast_t *node)
     return new;
 }
 
-ast_t *par_close(ast_t *node)
+ast_t *par_close(ast_t *node, bool *post)
 {
     ast_t *new = NULL;
 
     if (node->right->data) {
         if (node->right->data == par_close)
-            new = par_close(node->right);
+            new = par_close(node->right, post);
         else
             new = node->right;
         place_node(new, node->left);
+        *post = true;
     } else {
         new = node->left;
         free(node->right);
+        *post = false;
     }
     free(node);
     return new;
