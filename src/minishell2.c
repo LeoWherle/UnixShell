@@ -32,7 +32,6 @@ bool only_st(char *line)
     while ((line[i] == ' ' || line[i] == '\t') && line[i] != '\0')
         i++;
     if (line[i] == '\0') {
-        free(line);
         return true;
     }
     return false;
