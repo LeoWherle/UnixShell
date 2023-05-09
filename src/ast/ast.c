@@ -63,6 +63,7 @@ static ast_t *divide_text(char *text, int i, int size, int len)
 
     new = create_node(sep[i].ptr, SEP);
     ASSERT_MALLOC(new, NULL);
+    new->order = i;
     new->left = build_ast(strndup(text, size), i);
     ASSERT_MALLOC(new->left, NULL);
     new->right = build_ast(strdup(&text[size + len]), i);
