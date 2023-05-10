@@ -85,7 +85,10 @@ int use_pipe(ast_t *node, int to_read, int to_write, head_t *head)
 
     pipe(pfd);
     pid = fork();
-    if (pid == 0) {
+    if (pid < 0) {
+        head->keep = false;
+        return 84;
+    } else if (pid == 0) {
         r = execute(node->left, to_read, pfd[1], head);
         close(pfd[0]);
         exit(r);

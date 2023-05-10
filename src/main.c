@@ -29,8 +29,10 @@ char **find_path(env_t *env)
             break;
     if (env->line) {
         len = my_strlen(&env->line[5]);
-        if (len >= 1)
+        if (len >= 1) {
             e_path = my_str_to_word_array(&env->line[5], ':');
+            ASSERT_MALLOC(e_path, NULL);
+        }
     }
     return e_path;
 }

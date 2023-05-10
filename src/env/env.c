@@ -61,17 +61,18 @@ void make_env(char * const *e, head_t *head)
 {
     env_t *a = NULL;
     env_t *hold = NULL;
+
     a = add_env(e[0]);
     head->first = a;
     head->keep = true;
     head->size = rec(head->first, head, e, 1) + 1;
+    if (head->size == -1) return;
     head->pwd = find_env(head->first, "PWD");
     if (!head->pwd->line || head->pwd->line[4] == '\0')
         new_pwd(head->pwd, head);
     hold = find_env(head->first, "OLDPWD");
     head->oldpwd = NULL;
-    if (hold->line)
-        head->oldpwd = hold;
+    if (hold->line) head->oldpwd = hold;
     hold = find_env(head->first, "HOME");
     head->home = NULL;
     if (hold->line) {
