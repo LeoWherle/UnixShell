@@ -28,20 +28,10 @@ static char **convert_env(head_t *head)
     return c_env;
 }
 
-static int execute_command(char *command, char **arg, head_t *head)
+int command_exit_gestion(int state)
 {
-    int pid = 0;
-    int state = 0;
     int sig = 0;
-    char **c_env = NULL;
 
-    c_env = convert_env(head);
-    pid = fork();
-    if (pid == 0)
-        execve(command, arg, c_env);
-    if (pid > 0)
-        waitpid(pid, &state, 0);
-    free(c_env);
     if (WIFEXITED(state))
         return WEXITSTATUS(state);
     sig = WTERMSIG(state);
@@ -50,12 +40,37 @@ static int execute_command(char *command, char **arg, head_t *head)
     return state;
 }
 
+static int execute_command(char *command, char **arg, head_t *head)
+{
+    int pid = 0;
+    int state = 0;
+    char **c_env = NULL;
+
+    c_env = convert_env(head);
+    pid = fork();
+    if (pid < 0) {
+        head->keep = false;
+        return 84;
+    }
+    if (pid == 0)
+        execve(command, arg, c_env);
+    if (pid > 0)
+        waitpid(pid, &state, 0);
+    free(c_env);
+    return command_exit_gestion(state);
+}
+
 bool path_command(char **c, head_t *head, int *r)
 {
     char *file_path = NULL;
 
     for (int i = 0; head->path && head->path[i] != NULL; i++) {
         file_path = malloc(my_strlen(c[0]) + my_strlen(head->path[i]) + 2);
+        if (!file_path) {
+            head->lr = 84;
+            head->keep = false;
+            return true;
+        }
         my_strcpy(file_path, head->path[i]);
         my_strcat(file_path, "/");
         my_strcat(file_path, c[0]);
