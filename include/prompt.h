@@ -5,6 +5,8 @@
 ** prompt
 */
 
+#include "errorh.h"
+
 #ifndef PROMPT_H_
     #define PROMPT_H_
 
@@ -125,5 +127,8 @@
      * @return int 0
      */
     int delete_key(textfield_t *field, char seq[], head_t *head);
-
+    int ctrl_right_arrow(textfield_t *field, UNUSED char seq[],
+    UNUSED head_t *head);
+    int ctrl_left_arrow(textfield_t *field, UNUSED char seq[],
+    UNUSED head_t *head);
 #endif /* !PROMPT_H_ */

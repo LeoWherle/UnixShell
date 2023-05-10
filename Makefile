@@ -33,6 +33,7 @@ SRC = 	src/main.c	\
 		src/prompt/esc_handlers/arrow_keys.c \
 		src/prompt/esc_handlers/extra_keys.c \
 		src/prompt/read_line.c \
+		src/prompt/ctrl_handle.c \
 		src/command/command_gestion.c	\
 		src/command/command_builtin.c	\
 		src/alias/parse_aliases.c	\
