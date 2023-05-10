@@ -21,8 +21,8 @@ static const escchartype_t escapechars[] = {
 };
 
 static const escchartype_t ctrl_escapechars[] = {
-    {'C', right_arrow},
-    {'D', left_arrow},
+    {'D', ctrl_left_arrow},
+    {'C', ctrl_right_arrow},
     {EOF, NULL},
 };
 
