@@ -40,7 +40,6 @@ static char **init_file_list(char **file_list, textfield_t *field)
         file_list = get_file_list(file_list, "/usr/bin/");
         ASSERT_MALLOC(file_list, NULL);
     }
-    sort_files(file_list);
     return file_list;
 }
 
@@ -48,6 +47,7 @@ static char *get_match(char **file_list)
 {
     char *match = NULL;
 
+    sort_files(file_list);
     if (matrix_len(file_list) > 1) {
         print_fake_ls(file_list);
         match = get_best_match(file_list);
