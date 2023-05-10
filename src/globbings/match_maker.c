@@ -72,7 +72,7 @@ int globbings_change_command(char ***commands)
             continue;
         }
         tmp = get_all_matches((*commands)[i]);
-        if (!tmp || tmp->size == 0) {
+        if (!tmp || tmp->size == 0 || tmp->head->data == NULL) {
             return 1;
         }
         tmp = spread_matches(tmp);
