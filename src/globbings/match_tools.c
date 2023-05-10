@@ -50,6 +50,9 @@ void add_prefix_to_str(char **str, const char *prefix)
     if (!str || !(*str) || !prefix || prefix[0] == '\0') {
         return;
     }
+    if (prefix[0] == '/' && prefix[1] == '\0') {
+        prefix = "";
+    }
     tmp = *str;
     *str = malloc(strlen(prefix) + strlen(tmp) + 2);
     ASSERT_MALLOC(*str,);
