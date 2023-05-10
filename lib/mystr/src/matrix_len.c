@@ -6,6 +6,7 @@
 */
 
 #include <stddef.h>
+#include <stdlib.h>
 
 int matrix_len(char **m)
 {
@@ -16,4 +17,13 @@ int matrix_len(char **m)
     while (m[i] != NULL)
         i++;
     return i;
+}
+
+void free_matrix(char **matrix)
+{
+    if (!matrix)
+        return;
+    for (int i = 0; matrix[i] != NULL; i++)
+        free(matrix[i]);
+    free(matrix);
 }
