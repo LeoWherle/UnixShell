@@ -256,3 +256,47 @@ TESTS=
   echo 'cd ..'
   echo 'find */*/*'
 [927-END]
+
+[928]
+NAME="weird parentheses test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls)'
+  echo '()'
+  echo '(ls -l)'
+  echo '('
+  echo ')'
+  echo '(      )'
+  echo '(   ls   )'
+[928-END]
+
+[929]
+NAME="parentheses with ;"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l ; (ls ; ls)'
+  echo 'ls -l ; (ls ; ls) ; ls -l'
+[929-END]
+
+[930]
+NAME="parentheses with |"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l | (ls | ls)'
+  echo '(ls | cat -e) | ls -l'
+[930-END]
+
+[931]
+NAME="parentheses with && and ||"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls -l && (ls && ls)'
+  echo 'ls -l || (ls || ls)'
+  echo 'ls -l && (ls && ls) && ls -l'
+  echo 'ls -l || (ls || ls) || ls -l'
+  echo 'wow && (ls && ls) || ls'
+[931-END]

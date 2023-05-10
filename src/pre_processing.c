@@ -32,7 +32,6 @@ bool only_st(char *line)
     while ((line[i] == ' ' || line[i] == '\t') && line[i] != '\0')
         i++;
     if (line[i] == '\0') {
-        free(line);
         return true;
     }
     return false;
@@ -55,7 +54,8 @@ ast_t *post_parsing(ast_t *command_tree, head_t *head)
 {
     int open = 0;
     int close = 0;
-    ast_t *(*ptr)(ast_t *) = NULL;
+    ast_t *(*ptr)(ast_t *, bool *) = NULL;
+    bool post = false;
 
     if (!check_par(command_tree, &open, &close)) {
         free_ast(command_tree);
@@ -64,7 +64,7 @@ ast_t *post_parsing(ast_t *command_tree, head_t *head)
     }
     if (command_tree->data == par_open || command_tree->data == par_close) {
         ptr = command_tree->data;
-        command_tree = ptr(command_tree);
+        command_tree = ptr(command_tree, &post);
     }
     if (!check_tree(command_tree, 0)) {
         free_ast(command_tree);

@@ -27,6 +27,7 @@
     typedef struct ast {
         enum type type;
         void *data;
+        int order;
         struct ast *left;
         struct ast *right;
     } ast_t;
@@ -48,8 +49,8 @@
     int use_and(ast_t *node, int to_read, int to_write, head_t *head);
     int use_semi_colon(ast_t *node, int to_read, int to_write, head_t *head);
     int execute(ast_t *node, int to_read, int to_write, head_t *head);
-    ast_t *par_open(ast_t *node);
-    ast_t *par_close(ast_t *node);
+    ast_t *par_open(ast_t *node, bool *post);
+    ast_t *par_close(ast_t *node, bool *post);
 
     bool check_tree(ast_t *node, int i);
     bool check_par(ast_t *node, int *open, int *close);
