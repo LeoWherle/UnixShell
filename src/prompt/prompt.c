@@ -92,13 +92,16 @@ int print_shell(void)
     int length = 0;
 
     user = getenv("USER");
+    printf(BOLD WHITE"[");
+    length++;
+    if (user != NULL) {
+        printf(CYAN"%s"RESET, user);
+        length += strlen(user);
+    }
     length += print_host();
     length += print_dir();
     length += print_branch();
     printf(BOLD RED"$ "RESET);
     length += 2;
-    ASSERT_PTR(user, length);
-    printf(BOLD WHITE"["CYAN"%s"RESET, user);
-    length += 1 + strlen(user);
     return length;
 }
