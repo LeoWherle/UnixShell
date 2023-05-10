@@ -18,6 +18,7 @@ static int print_host(void)
     char host_name[MAX_BUFFER_SIZE];
     int length = 0;
 
+    memset(host_name, 0, MAX_BUFFER_SIZE - 1);
     gethostname(host_name, MAX_BUFFER_SIZE);
     printf(BOLD RED"@"GREEN"%s:"RESET, host_name);
     length = strlen(host_name) + 2;
@@ -91,9 +92,12 @@ int print_shell(void)
     int length = 0;
 
     user = getenv("USER");
-    DEBUG_ERROR_CHECK(user);
-    printf(BOLD WHITE"["CYAN"%s"RESET, user);
-    length += 1 + strlen(user);
+    printf(BOLD WHITE"[");
+    length++;
+    if (user != NULL) {
+        printf(CYAN"%s"RESET, user);
+        length += strlen(user);
+    }
     length += print_host();
     length += print_dir();
     length += print_branch();

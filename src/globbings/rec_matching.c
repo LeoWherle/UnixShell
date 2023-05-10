@@ -6,6 +6,7 @@
 */
 
 #include <stddef.h>
+#include <stdlib.h>
 #include "globber.h"
 
 static void rec_match_find(char **elems, list_t *res, int depth)
@@ -14,10 +15,14 @@ static void rec_match_find(char **elems, list_t *res, int depth)
     node_t *node = NULL;
 
     node = res->head;
-    while (node) {
+    for (; node; node = node->next) {
         tmp = reslist_from_ppattern(elems, node->data, depth + 1);
-        node->data = str_from_list(tmp);
-        node = node->next;
+        if (!tmp) continue;
+        free(node->data);
+        node->data = NULL;
+        if (tmp->size > 0)
+            node->data = str_from_list(tmp);
+        list_destroy(tmp, &free_str);
     }
 }
 

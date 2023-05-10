@@ -71,7 +71,7 @@
     /*command_gestion*/
     void create_rc_file(head_t *);
     int use_command(char **, head_t *);
-    int path_command(char **, head_t *);
+    bool path_command(char **, head_t *, int *);
     bool exec_special_case(char **, head_t *, int *);
     char *change_command(char *, head_t *);
     int globbings_change_command(char ***);
@@ -94,6 +94,5 @@
     void free_alias(void *);
     bool create_head(head_t *head, char * const *e);
     void free_head(head_t *head);
-    void list_end(void);
 
 #endif /*MYSH_H*/

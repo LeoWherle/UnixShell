@@ -32,7 +32,6 @@ bool only_st(char *line)
     while ((line[i] == ' ' || line[i] == '\t') && line[i] != '\0')
         i++;
     if (line[i] == '\0') {
-        free(line);
         return true;
     }
     return false;
@@ -51,6 +50,30 @@ char *pre_parsing(char *command_line, head_t *head)
     return command_line;
 }
 
+ast_t *post_parsing(ast_t *command_tree, head_t *head)
+{
+    int open = 0;
+    int close = 0;
+    ast_t *(*ptr)(ast_t *, bool *) = NULL;
+    bool post = false;
+
+    if (!check_par(command_tree, &open, &close)) {
+        free_ast(command_tree);
+        head->lr = 1;
+        return NULL;
+    }
+    if (command_tree->data == par_open || command_tree->data == par_close) {
+        ptr = command_tree->data;
+        command_tree = ptr(command_tree, &post);
+    }
+    if (!check_tree(command_tree, 0)) {
+        free_ast(command_tree);
+        head->lr = 1;
+        return NULL;
+    }
+    return command_tree;
+}
+
 int separator_handler(char *command_line, head_t *head)
 {
     ast_t *command_tree = NULL;
@@ -66,7 +89,8 @@ int separator_handler(char *command_line, head_t *head)
         head->keep = false;
         return 84;
     }
-    if (!check_tree(command_tree, 0)) return 1;
+    command_tree = post_parsing(command_tree, head);
+    if (!command_tree) return head->lr;
     r = execute(command_tree, 0, 1, head);
     free_ast(command_tree);
     dup2(head->stdin_copy, 0);

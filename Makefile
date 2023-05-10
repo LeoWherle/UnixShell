@@ -22,11 +22,10 @@ RESET		=	\033[0m
 
 NAME = 42sh
 
-SRC = 	src/minishell.c	\
+SRC = 	src/main.c	\
 		src/head.c	\
-		src/minishell2.c	\
-		src/env.c	\
-		src/chained_list_end.c	\
+		src/pre_processing.c	\
+		src/env/env.c	\
 		src/prompt/prompt.c \
 		src/prompt/ansi_handle.c \
 		src/prompt/char_handle.c \
@@ -34,8 +33,9 @@ SRC = 	src/minishell.c	\
 		src/prompt/esc_handlers/arrow_keys.c \
 		src/prompt/esc_handlers/extra_keys.c \
 		src/prompt/read_line.c \
-		src/command_gestion.c	\
-		src/command_builtin.c	\
+		src/prompt/ctrl_handle.c \
+		src/command/command_gestion.c	\
+		src/command/command_builtin.c	\
 		src/alias/parse_aliases.c	\
 		src/alias/change_command.c	\
 		src/builtin/alias_builtin.c \
@@ -54,6 +54,7 @@ SRC = 	src/minishell.c	\
 		src/history/history_print.c	\
 		src/history/history_builtin.c	\
 		src/history/history_parse.c	\
+		src/history/add_to_history.c	\
 		src/globbings/match_concerned.c	\
 		src/globbings/glob_handlers.c	\
 		src/globbings/match_tools.c	\

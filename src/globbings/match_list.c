@@ -30,14 +30,12 @@ char *str_from_list(list_t *list)
     int i = 0;
     int j = 0;
 
-    if (!list || list->size == 0)
-        return NULL;
+    if (!list || list->size == 0) return NULL;
     str = malloc(calc_str_list_len(list));
     ASSERT_MALLOC(str, NULL);
     while (list->size > 0) {
         tmp = node_popf(list);
-        if (!tmp)
-            continue;
+        if (!tmp) continue;
         for (j = 0; tmp[j] != '\0'; j++, i++)
             str[i] = tmp[j];
         str[i++] = ' ';
@@ -81,6 +79,7 @@ void insert_list_in_tab(char ***tab, list_t *list, int i)
     free((*tab)[i]);
     free(*tab);
     *tab = tmp;
+    list_destroy(list, &free_str);
 }
 
 char **list_to_tab(list_t *list)

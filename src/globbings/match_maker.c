@@ -14,13 +14,19 @@ static list_t *get_all_matches(const char *pattern)
 {
     char **pparsed = NULL;
     const char *prefix = NULL;
+    list_t *res = NULL;
 
     if (!pattern) {
         return NULL;
     }
     prefix = pattern[0] == '/' ? "/" : "";
     pparsed = parse_pattern(pattern);
-    return reslist_from_ppattern(pparsed, prefix, 0);
+    res = reslist_from_ppattern(pparsed, prefix, 0);
+    for (int i = 0; pparsed[i]; i++) {
+        free(pparsed[i]);
+    }
+    free(pparsed);
+    return res;
 }
 
 static void spread_step(list_t *results, list_t *res)
@@ -70,7 +76,6 @@ int globbings_change_command(char ***commands)
         sort_matches(tmp->head);
         move_dirs_to_end(tmp);
         insert_list_in_tab(commands, tmp, i);
-        list_destroy(tmp, &free_str);
     }
     return 0;
 }

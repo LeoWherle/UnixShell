@@ -8,8 +8,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "prompt.h"
+#include "mystr.h"
+#include "errorh.h"
 
-int delete_key(textfield_t *field, char seq[])
+int delete_key(textfield_t *field, char seq[], UNUSED head_t *head)
 {
     if (seq[1] == '~') {
         if (field->cursor_pos < strlen(field->buffer)) {
