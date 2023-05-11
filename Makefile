@@ -36,6 +36,7 @@ SRC = 	src/main.c	\
 		src/prompt/ctrl_handle.c \
 		src/command/command_gestion.c	\
 		src/command/command_builtin.c	\
+		src/command/exec_command.c	\
 		src/alias/parse_aliases.c	\
 		src/alias/change_command.c	\
 		src/builtin/alias_builtin.c \

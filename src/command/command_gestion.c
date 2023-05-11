@@ -14,52 +14,6 @@
 #include <sys/stat.h>
 #include "mysh.h"
 
-static char **convert_env(head_t *head)
-{
-    char **c_env = NULL;
-    int i = 0;
-
-    c_env = malloc((head->size + 1) * sizeof(char *));
-    for (env_t *e = head->first; e->line != NULL; e = e->next) {
-        c_env[i] = e->line;
-        i++;
-    }
-    c_env[i] = NULL;
-    return c_env;
-}
-
-int command_exit_gestion(int state)
-{
-    int sig = 0;
-
-    if (WIFEXITED(state))
-        return WEXITSTATUS(state);
-    sig = WTERMSIG(state);
-    write(2, strsignal(sig), my_strlen(strsignal(sig)));
-    write(2, "\n", 1);
-    return state;
-}
-
-static int execute_command(char *command, char **arg, head_t *head)
-{
-    int pid = 0;
-    int state = 0;
-    char **c_env = NULL;
-
-    c_env = convert_env(head);
-    pid = fork();
-    if (pid < 0) {
-        head->keep = false;
-        return 84;
-    }
-    if (pid == 0)
-        execve(command, arg, c_env);
-    if (pid > 0)
-        waitpid(pid, &state, 0);
-    free(c_env);
-    return command_exit_gestion(state);
-}
-
 bool path_command(char **c, head_t *head, int *r)
 {
     char *file_path = NULL;
