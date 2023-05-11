@@ -47,13 +47,17 @@ static char *get_match(char **file_list)
 {
     char *match = NULL;
 
+    if (file_list[0] == NULL) {
+        free(file_list);
+        return (NULL);
+    }
     sort_files(file_list);
     if (matrix_len(file_list) > 1) {
         print_fake_ls(file_list);
         match = get_best_match(file_list);
     } else
         match = file_list[0];
-    return match;
+    return (match);
 }
 
 int tab_key(textfield_t *field, UNUSED head_t *head)
@@ -67,10 +71,8 @@ int tab_key(textfield_t *field, UNUSED head_t *head)
     command = get_command(field->buffer);
     file_list = get_corresponding_files(file_list, command);
     ASSERT_PTR(file_list, 0);
-    if (file_list[0] == NULL) { free(file_list);
-        return 0;
-    }
     match = get_match(file_list);
+    ASSERT_PTR(match, 0);
     memmove(command, match, strlen(match));
     field->bf_size = strlen(field->buffer) + strlen(match) - strlen(command);
     field->cursor_pos = field->bf_size;
