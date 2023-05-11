@@ -300,3 +300,11 @@ TESTS=
   echo 'ls -l || (ls || ls) || ls -l'
   echo 'wow && (ls && ls) || ls'
 [931-END]
+
+[932]
+NAME="root globbing test"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'find /usr/bin/z*'
+[932-END]

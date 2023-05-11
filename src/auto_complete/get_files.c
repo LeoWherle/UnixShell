@@ -81,11 +81,10 @@ static int count_corresponding_files(char **file_list, char *field)
     int k = 0;
 
     for (i = 0; file_list[i]; i++) {
-        tmp = strdup(file_list[i]);
+        tmp = file_list[i];
         if (strncmp(tmp, field, strlen(field)) == 0) {
             k++;
         }
-        free(tmp);
     }
     return (k);
 }
@@ -101,12 +100,11 @@ char **get_corresponding_files(char **file_list, char *field)
     ASSERT_MALLOC(tmp_list, NULL);
     k = 0;
     for (i = 0; file_list[i]; i++) {
-        tmp = strdup(file_list[i]);
+        tmp = file_list[i];
         if (strncmp(tmp, field, strlen(field)) == 0) {
             tmp_list[k] = strdup(file_list[i]);
             k++;
         }
-        free(tmp);
     }
     tmp_list[k] = NULL;
     free_matrix(file_list);

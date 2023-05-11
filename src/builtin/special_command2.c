@@ -51,6 +51,7 @@ int my_exit(char **command_line, head_t *head)
     if (len > 2) {
         if (handle_error(command_line[1], head, &r) == 0)
             write(2, "exit: Expression Syntax.\n", 25);
+        head->keep = true;
         return 1;
     }
     return r;

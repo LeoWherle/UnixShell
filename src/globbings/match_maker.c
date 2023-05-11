@@ -13,13 +13,16 @@
 static list_t *get_all_matches(const char *pattern)
 {
     char **pparsed = NULL;
-    const char *prefix = NULL;
+    const char *prefix = "";
     list_t *res = NULL;
 
     if (!pattern) {
         return NULL;
     }
-    prefix = pattern[0] == '/' ? "/" : "";
+    if (pattern[0] == '/') {
+        prefix = "/";
+        pattern++;
+    }
     pparsed = parse_pattern(pattern);
     res = reslist_from_ppattern(pparsed, prefix, 0);
     for (int i = 0; pparsed[i]; i++) {
@@ -69,7 +72,7 @@ int globbings_change_command(char ***commands)
             continue;
         }
         tmp = get_all_matches((*commands)[i]);
-        if (!tmp || tmp->size == 0) {
+        if (!tmp || tmp->size == 0 || tmp->head->data == NULL) {
             return 1;
         }
         tmp = spread_matches(tmp);

@@ -40,30 +40,44 @@ static char **init_file_list(char **file_list, textfield_t *field)
         file_list = get_file_list(file_list, "/usr/bin/");
         ASSERT_MALLOC(file_list, NULL);
     }
-    sort_files(file_list);
     return file_list;
+}
+
+static char *get_match(char **file_list)
+{
+    char *match = NULL;
+
+    if (file_list[0] == NULL) {
+        free(file_list);
+        return (NULL);
+    }
+    sort_files(file_list);
+    if (matrix_len(file_list) > 1) {
+        print_fake_ls(file_list);
+        match = get_best_match(file_list);
+    } else
+        match = file_list[0];
+    return (match);
 }
 
 int tab_key(textfield_t *field, UNUSED head_t *head)
 {
     char **file_list = NULL;
-    char *command = NULL; char *tmp = NULL;
+    char *command = NULL;
+    char *match = NULL;
 
     file_list = init_file_list(file_list, field);
     ASSERT_PTR(file_list, 0);
     command = get_command(field->buffer);
     file_list = get_corresponding_files(file_list, command);
     ASSERT_PTR(file_list, 0);
-    ASSERT_PTR(file_list[0], 0);
-    if (matrix_len(file_list) > 1) {
-        print_fake_ls(file_list);
-        tmp = get_best_match(file_list);
-    } else
-        tmp = file_list[0];
-    memmove(command, tmp, strlen(tmp));
-    field->bf_size = strlen(field->buffer) + strlen(tmp) - strlen(command);
+    match = get_match(file_list);
+    ASSERT_PTR(match, 0);
+    memmove(command, match, strlen(match));
+    field->bf_size = strlen(field->buffer) + strlen(match) - strlen(command);
     field->cursor_pos = field->bf_size;
-    if (tmp != file_list[0]) free(tmp);
+    if (match != file_list[0])
+        free(match);
     free_matrix(file_list);
     return 0;
 }

@@ -75,6 +75,7 @@
     bool exec_special_case(char **, head_t *, int *);
     char *change_command(char *, head_t *);
     int globbings_change_command(char ***);
+    int execute_command(char *command, char **arg, head_t *head);
 
     /*special_command*/
     int change_dir(char **, head_t *);

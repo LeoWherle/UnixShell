@@ -22,7 +22,21 @@ static void rec_match_find(char **elems, list_t *res, int depth)
         node->data = NULL;
         if (tmp->size > 0)
             node->data = str_from_list(tmp);
+        else
+            node_pop(res, node);
         list_destroy(tmp, &free_str);
+    }
+}
+
+static void cleans_reslist(list_t *res)
+{
+    node_t *node = NULL;
+
+    node = res->head;
+    for (; node; node = node->next) {
+        if (!node->data) {
+            node_pop(res, node);
+        }
     }
 }
 
@@ -41,5 +55,6 @@ list_t *reslist_from_ppattern(char **elems, const char *prefix, int depth)
         add_prefix_to_list(res, prefix);
         rec_match_find(elems, res, depth);
     }
+    cleans_reslist(res);
     return res;
 }
