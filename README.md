@@ -7,11 +7,11 @@
   - [Lucien Pineau](https://github.com/mathematisse)
 
 ## Goal:
-  Unix shell
+  a Unix shell in C
 
 ## Language : C
 
-## Library : libC & ncurses
+## Library : libC
 
 ## Requirements :
   - gcc or clang
@@ -22,5 +22,3 @@
 ```
   $ ./42sh
 ```
-
-## Features:
